@@ -1,1 +1,5 @@
 streamlit
+nba_api
+pandas
+requests
+bs4

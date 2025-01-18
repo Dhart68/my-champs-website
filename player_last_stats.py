@@ -16,9 +16,13 @@ def player_last_stats(player_picked = 'victor wembanyama'):
     last_3_games = games_data.head(3).copy()
     last_3_games['location'] = last_3_games['MATCHUP'].apply(lambda x: "home" if 'vs' in x else "away")
 
+    # get the score of the games
+
     # Reorder the columns
-    last_3_games = last_3_games[['GAME_DATE','Game_ID', 'MATCHUP','location', 'MIN','PTS', 'REB',
+    last_3_games = last_3_games[['GAME_DATE','Game_ID', 'MATCHUP','WL','location', 'MIN','PTS', 'REB',
                                'AST', 'STL', 'BLK', 'FGA', 'FG_PCT', 'FG3A',
                                'FG3_PCT', 'FTA','FT_PCT', 'OREB', 'DREB', 'TOV', 'PF', 'PLUS_MINUS']]
+
+    last_3_games.reset_index(drop=True, inplace=True)
 
     return [last_3_games, player_id]

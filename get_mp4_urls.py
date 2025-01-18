@@ -6,7 +6,7 @@ import pandas as pd
 from nba_api.stats.endpoints import playbyplayv2
 
 
-def get_mp4_urls(player_id = '203999', game_id = '0022400559', game_location = 'away'):
+def get_mp4_urls(player_id = '203999', game_id = '0022400559', game_location = 'away', option = 'Best'):
     ### Function to get the URL of the video of the player picked, need the game_id and the player_id
     ### get the list of URLs of the video part of interest, could be improve with the EVENTMSGACTIONTYPE
     ### to select only some type of actions
@@ -18,18 +18,46 @@ def get_mp4_urls(player_id = '203999', game_id = '0022400559', game_location = '
 
     # select rows in pbp_player containing Name of the player
     # I choose to select only the 2 players involved to limit the number of actions
-    pbp_player = pbp[(pbp['PLAYER1_ID'] == int(player_id)) |
-                     (pbp['PLAYER2_ID'] == int(player_id)) ]
-    #pbp_player.shape
+     #pbp_player.shape
 
-    # select video_event_pd where desc does not contain remove terms
-    # list of sequences to avoid
-    Remove_terms = ['REBOUND', 'MISS', 'Free Throw']
+    # option to choose what to select, many possibilities
+    if option == 'Full': # Full option = all the sequences
+        pbp_player = pbp[(pbp['PLAYER1_ID'] == int(player_id)) |
+                         (pbp['PLAYER2_ID'] == int(player_id)) ]
 
-    if game_location == 'away':
-        pbp_player = pbp_player[(pbp_player['VISITORDESCRIPTION'].str.contains('|'.join(Remove_terms), na=False) == False) ]
-    if game_location == 'home':
-        pbp_player = pbp_player[(pbp_player['HOMEDESCRIPTION'].str.contains('|'.join(Remove_terms), na=False) == False) ]
+    if option == 'Best':
+        # select video_event_pd where desc does not contain remove terms
+        pbp_player = pbp[(pbp['PLAYER1_ID'] == int(player_id)) |
+                         (pbp['PLAYER2_ID'] == int(player_id)) ]
+
+        Remove_terms = ['REBOUND', 'MISS', 'Free Throw']
+
+        if game_location == 'away':
+            pbp_player = pbp_player[(pbp_player['VISITORDESCRIPTION'].str.contains('|'.join(Remove_terms), na=False) == False) ]
+        if game_location == 'home':
+            pbp_player = pbp_player[(pbp_player['HOMEDESCRIPTION'].str.contains('|'.join(Remove_terms), na=False) == False) ]
+
+    if option == 'FGM': # FGM Shots only
+        # select video_event_pd where desc does not contain remove terms
+        pbp_player = pbp[(pbp['PLAYER1_ID'] == int(player_id))]
+        Selected_terms = ['PTS']
+
+        if game_location == 'away':
+            pbp_player = pbp_player[(pbp_player['VISITORDESCRIPTION'].str.contains('|'.join(Remove_terms), na=False) == False) ]
+        if game_location == 'home':
+            pbp_player = pbp_player[(pbp_player['HOMEDESCRIPTION'].str.contains('|'.join(Remove_terms), na=False) == False) ]
+
+    if option == '3PT': # 3pts Shots only
+        # select video_event_pd where desc does not contain remove terms
+        pbp_player = pbp[(pbp['PLAYER1_ID'] == int(player_id))]
+        Selected_terms = ['3PT']
+
+        if game_location == 'away':
+            pbp_player = pbp_player[(pbp_player['VISITORDESCRIPTION'].str.contains('|'.join(Selected_terms), na=False) == True) ]
+        if game_location == 'home':
+            pbp_player = pbp_player[(pbp_player['HOMEDESCRIPTION'].str.contains('|'.join(Selected_terms), na=False) == True) ]
+
+    # Should be other options...
 
     #pbp_player.shape
 

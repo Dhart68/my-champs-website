@@ -4,17 +4,9 @@ from player_last_stats import player_last_stats
 from get_mp4_urls import get_mp4_urls
 from get_player_image import get_player_image
 
-'''
-# my-champs front
-'''
-
 st.title('my-champs!')
 
-
-st.markdown('''This is my-champs website ''')
-
 player_picked = st.text_input("Player Name", "victor wembanyama")
-st.write("The current movie title is", player_picked)
 
 # Function to get the stats of the day for the player
 [last_3_games, player_id] = player_last_stats(player_picked)
@@ -24,15 +16,30 @@ last_game_location = last_3_games['location'][0]
 
 # get the image of the player and display it
 image_picked = get_player_image(player_id)
-st.image(image_picked, caption=player_picked, width=100)
+st.image(image_picked, caption=player_picked, width=250)
 
 # Display the stats of the last 3 games
-st.dataframe(last_3_games.drop(['Game_ID','location'], axis = 1))
+st.dataframe(last_3_games.drop(['location'], axis = 1))
+
+# Select a game
+'''
+# Add a radio button to select rows
+selected_index = st.radio("Select a game:", last_3_games.index, format_func=lambda i: last_3_games.loc[i, 'Game_ID'])
+
+# Show details of the selected row
+st.write("### Selected Row Details:")
+st.write(last_3_games.loc[selected_index])
+
+game_selected = last_3_games.loc[selected_index]['Game_ID']
+'''
+game_selected = last_game_id
 
 # Function to get the stats of the day for the player
-video_event_df = get_mp4_urls(player_id, last_game_id, last_game_location)
+video_event_df = get_mp4_urls(player_id, game_selected, last_game_location, option = 'Best')
 
 video_urls = video_event_df['video'].to_list()
+# Add a video at the end of the list
+#video_urls.append("https://www.youtube.com/watch?v=3Qz1GMpOtUY")
 
 # Convert Python list of URLs to a JavaScript-compatible array
 video_urls_js = ','.join(f'"{url}"' for url in video_urls)

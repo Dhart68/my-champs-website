@@ -6,7 +6,7 @@ import pandas as pd
 from nba_api.stats.endpoints import playbyplayv2
 
 
-def get_mp4_urls(player_id = '203999', game_id = '0022400559', game_location = 'away', option = 'Best'):
+def get_mp4_urls(player_id, game_id, game_location, option):
     ### Function to get the URL of the video of the player picked, need the game_id and the player_id
     ### get the list of URLs of the video part of interest, could be improve with the EVENTMSGACTIONTYPE
     ### to select only some type of actions
@@ -36,26 +36,6 @@ def get_mp4_urls(player_id = '203999', game_id = '0022400559', game_location = '
             pbp_player = pbp_player[(pbp_player['VISITORDESCRIPTION'].str.contains('|'.join(Remove_terms), na=False) == False) ]
         if game_location == 'home':
             pbp_player = pbp_player[(pbp_player['HOMEDESCRIPTION'].str.contains('|'.join(Remove_terms), na=False) == False) ]
-
-    if option == 'FGM': # FGM Shots only
-        # select video_event_pd where desc does not contain remove terms
-        pbp_player = pbp[(pbp['PLAYER1_ID'] == int(player_id))]
-        Selected_terms = ['PTS']
-
-        if game_location == 'away':
-            pbp_player = pbp_player[(pbp_player['VISITORDESCRIPTION'].str.contains('|'.join(Remove_terms), na=False) == False) ]
-        if game_location == 'home':
-            pbp_player = pbp_player[(pbp_player['HOMEDESCRIPTION'].str.contains('|'.join(Remove_terms), na=False) == False) ]
-
-    if option == '3PT': # 3pts Shots only
-        # select video_event_pd where desc does not contain remove terms
-        pbp_player = pbp[(pbp['PLAYER1_ID'] == int(player_id))]
-        Selected_terms = ['3PT']
-
-        if game_location == 'away':
-            pbp_player = pbp_player[(pbp_player['VISITORDESCRIPTION'].str.contains('|'.join(Selected_terms), na=False) == True) ]
-        if game_location == 'home':
-            pbp_player = pbp_player[(pbp_player['HOMEDESCRIPTION'].str.contains('|'.join(Selected_terms), na=False) == True) ]
 
     # Should be other options...
 

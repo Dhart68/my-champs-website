@@ -3,41 +3,54 @@ import streamlit as st
 from player_last_stats import player_last_stats
 from get_mp4_urls import get_mp4_urls
 from get_player_image import get_player_image
+from nba_api.stats.static import players
 
 st.title('my-champs!')
 
-player_picked = st.text_input("Player Name", "victor wembanyama")
+active_players= players.get_active_players()
+list_active_players = [player['full_name'] for player in active_players]
 
-# Function to get the stats of the day for the player
+player_picked = st.selectbox(
+    "Choose your champ",
+    list_active_players,
+    index=None,
+    placeholder="Select a player...",
+)
+
+# Function to get the stats of the 3 last games for the player picked
 [last_3_games, player_id] = player_last_stats(player_picked)
-
-last_game_id = last_3_games['Game_ID'][0]
-last_game_location = last_3_games['location'][0]
 
 # get the image of the player and display it
 image_picked = get_player_image(player_id)
 st.image(image_picked, caption=player_picked, width=250)
 
 # Display the stats of the last 3 games
-st.dataframe(last_3_games.drop(['location'], axis = 1))
+st.dataframe(last_3_games)#.drop(['location'], axis = 1))
 
-# Select a game
-'''
-# Add a radio button to select rows
-selected_index = st.radio("Select a game:", last_3_games.index, format_func=lambda i: last_3_games.loc[i, 'Game_ID'])
+# Select a game and find location
+game_id = st.selectbox(
+    "Choose your game",
+    last_3_games['Game_ID'],
+    index=None,
+    placeholder="Select a Game_ID...",
+)
 
-# Show details of the selected row
-st.write("### Selected Row Details:")
-st.write(last_3_games.loc[selected_index])
+game_location = last_3_games[last_3_games['Game_ID']==game_id]['location'].values[0]
 
-game_selected = last_3_games.loc[selected_index]['Game_ID']
-'''
-game_selected = last_game_id
+# Choose an option
+option = st.selectbox(
+    "Choose your video option",
+    ['Full', 'Best'],
+    index=None,
+    placeholder="Select a sequences options...",
+)
 
-# Function to get the stats of the day for the player
-video_event_df = get_mp4_urls(player_id, game_selected, last_game_location, option = 'Best')
+# Function to get the videos of the selected gamey for the player
+video_event_df = get_mp4_urls(player_id, game_id, game_location, option)
 
 video_urls = video_event_df['video'].to_list()
+st.write(f'There is {len(video_urls)} sequences')
+
 # Add a video at the end of the list
 #video_urls.append("https://www.youtube.com/watch?v=3Qz1GMpOtUY")
 
@@ -84,6 +97,6 @@ video_player_html = f"""
     }};
 </script>
 """
-
 # Display the video player in Streamlit
-st.components.v1.html(video_player_html, height=500)
+if st.button("Play sequences", type="primary"):
+    st.components.v1.html(video_player_html, height=500)

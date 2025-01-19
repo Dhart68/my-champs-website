@@ -3,7 +3,7 @@
 from nba_api.stats.static import players
 from nba_api.stats.endpoints import playergamelog
 
-def player_last_stats(player_picked = 'victor wembanyama'):
+def player_last_stats(player_picked):
 
     # Get info about the player
     player_id = players.find_players_by_full_name(player_picked)[0]['id']

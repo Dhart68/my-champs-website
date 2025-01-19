@@ -5,6 +5,8 @@ from get_mp4_urls import get_mp4_urls
 from get_player_image import get_player_image
 from nba_api.stats.static import players
 
+st.set_page_config(layout="wide")
+
 st.title('my-champs!')
 
 active_players= players.get_active_players()
@@ -13,6 +15,7 @@ list_active_players = [player['full_name'] for player in active_players]
 
 ##### to do ###
 # remove the error/warning message when selectbox are not filled
+
 # Display 3 stars pictures and main stats (last game PTS, RBD, AST)
 
 # when you click on a picture you launch the viewer with all the selectbox defined
@@ -29,25 +32,35 @@ player_picked = st.selectbox(
 )
 
 # Function to get the stats of the 3 last games for the player picked
-[last_3_games, player_id] = player_last_stats(player_picked)
+[last_5_games, player_id] = player_last_stats(player_picked)
 
 # get the image of the player and display it
-### to do : place the pic on the left side and the dataframe on it's right
 image_picked = get_player_image(player_id)
-st.image(image_picked, caption=player_picked, width=250)
 
-# Display the stats of the last 3 games
-st.dataframe(last_3_games)#.drop(['location'], axis = 1))
+# Create two columns
+col1, col2 = st.columns([1,6])
+
+# Display image in the first column
+with col1:
+    st.image(image_picked, caption=player_picked, width=250)
+
+# Display DataFrame in the second column
+with col2:
+    st.dataframe(last_5_games, hide_index=True, height=200)
+
+
+### to do ###
+# Add the scores
 
 # Select a game and find location
 game_id = st.selectbox(
     "Choose your game",
-    last_3_games['Game_ID'],
+    last_5_games['Game_ID'],
     index=None,
     placeholder="Select a Game_ID...",
 )
 
-game_location = last_3_games[last_3_games['Game_ID']==game_id]['location'].values[0]
+game_location = last_5_games[last_5_games['Game_ID']==game_id]['location'].values[0]
 
 # Choose an option
 option = st.selectbox(

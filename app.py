@@ -10,6 +10,17 @@ st.title('my-champs!')
 active_players= players.get_active_players()
 list_active_players = [player['full_name'] for player in active_players]
 
+
+##### to do ###
+# remove the error/warning message when selectbox are not filled
+# Display 3 stars pictures and main stats (last game PTS, RBD, AST)
+
+# when you click on a picture you launch the viewer with all the selectbox defined
+# Add a PLUS button to add another player
+
+# Display last scores of the day
+
+
 player_picked = st.selectbox(
     "Choose your champ",
     list_active_players,
@@ -21,6 +32,7 @@ player_picked = st.selectbox(
 [last_3_games, player_id] = player_last_stats(player_picked)
 
 # get the image of the player and display it
+### to do : place the pic on the left side and the dataframe on it's right
 image_picked = get_player_image(player_id)
 st.image(image_picked, caption=player_picked, width=250)
 

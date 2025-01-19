@@ -46,7 +46,7 @@ with col1:
 
 # Display DataFrame in the second column
 with col2:
-    st.dataframe(last_5_games, hide_index=True, height=200)
+    st.dataframe(last_5_games, hide_index=True, height=210)
 
 
 ### to do ###

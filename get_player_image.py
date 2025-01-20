@@ -23,5 +23,7 @@ def get_player_image(player_id):
     if img_tag and 'src' in img_tag.attrs:
         return img_tag['src']
 
+    # extract bio info (born, age ,nationality, position, taille)
+
     # Return message if the image tag is not found
     return print("Player image not found.")

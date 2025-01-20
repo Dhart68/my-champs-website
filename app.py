@@ -38,68 +38,79 @@ player_picked = st.selectbox(
     placeholder="Select a player...",
 )
 
-# Function to get the stats of the 3 last games for the player picked
-[last_5_games, player_id] = player_last_stats(player_picked)
+# Conditional logic to handle the case where no option is selected
+if player_picked:
+    # Function to get the stats of the 3 last games for the player picked
+    [last_5_games, player_id] = player_last_stats(player_picked)
 
-# get the image of the player and display it
-image_picked = get_player_image(player_id)
+    # get the image of the player and display it
+    image_picked = get_player_image(player_id)
 
-# Create two columns
-col1, col2 = st.columns([1,6])
+    player_caption = player_picked # add more info here from get_player_image
 
-# Display image in the first column
-with col1:
-    st.image(image_picked, caption=player_picked, width=250)
+    # Create two columns
+    col1, col2 = st.columns([1,6])
 
-# Display DataFrame in the second column
-with col2:
-    st.dataframe(last_5_games, hide_index=True, height=210)
+    # Display image in the first column
+    with col1:
+        st.image(image_picked, caption=player_caption, width=250)
+
+    # Display DataFrame in the second column
+    with col2:
+        st.dataframe(last_5_games, hide_index=True, height=210)
 
 
-### to do ###
-# Add the scores
+    ### to do ###
+    # Add the scores
 
-# Select a game and find location
-game_id = st.selectbox(
-    "Choose your game",
-    last_5_games['Game_ID'],
-    index=None,
-    placeholder="Select a Game_ID...",
-)
+    # Select a game and find location
+    game_id = st.selectbox(
+        "Choose your game",
+        last_5_games['Game_ID'],
+        index=None,
+        placeholder="Select a Game_ID...",
+    )
 
-game_location = last_5_games[last_5_games['Game_ID']==game_id]['location'].values[0]
 
-# Choose an option
-option = st.selectbox(
-    "Choose your video option",
-    ['Full', 'Best'],
-    index=None,
-    placeholder="Select a sequences options...",
-)
+    if game_id:
+        game_location = last_5_games[last_5_games['Game_ID']==game_id]['location'].values[0]
 
-# Function to get the videos of the selected game for the player
-video_event_df = get_mp4_urls(player_id, game_id, game_location, option)
+        # Choose an option
+        option = st.selectbox(
+            "Choose your video option",
+            ['Full', 'Best'],
+            index=None,
+            placeholder="Select a sequences options...",
+        )
 
-video_urls = video_event_df['video'].to_list()
-st.write(f'There is {len(video_urls)} sequences')
+        # Conditional logic to handle the case where no option is selected
+        if option:
+            # Function to get the videos of the selected game for the player
+            video_event_df = get_mp4_urls(player_id, game_id, game_location, option)
 
-# Add a video at the end of the list
-#video_urls.append("https://www.youtube.com/watch?v=3Qz1GMpOtUY")
+            video_urls = video_event_df['video'].to_list()
+            st.write(f'There is {len(video_urls)} sequences')
 
-# Convert Python list of URLs to a JavaScript-compatible array
-video_urls_js = ','.join(f'"{url}"' for url in video_urls) # needed for the first video player
+            # Add a video at the end of the list
+            #video_urls.append("https://www.youtube.com/watch?v=3Qz1GMpOtUY")
 
-# Load the video player
-video_player_html = generate_video_player_5(video_urls, video_urls_js)
-#video_player_html = generate_video_player_3(video_urls)
+            # Convert Python list of URLs to a JavaScript-compatible array
+            video_urls_js = ','.join(f'"{url}"' for url in video_urls) # needed for the first video player
 
-# Display the video player in Streamlit
-if st.button("Play sequences", type="primary"):
-    st.components.v1.html(video_player_html, height=500)
+            # Load the video player
+            video_player_html = generate_video_player_5(video_urls, video_urls_js)
+            #video_player_html = generate_video_player_3(video_urls)
+
+            # Display the video player in Streamlit
+            if st.button("Play sequences", type="primary"):
+                st.components.v1.html(video_player_html, height=500)
 
 
 # Module of data analysis
+## plotly to make the chart settable
+## display evolution of min per game over time
+## as for babies, add mean and tendancy for player at the same position
+## forecast the previous chart
 
-
-
-# Modeling
+# ML/AI
+## to think about it

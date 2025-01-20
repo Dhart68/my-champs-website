@@ -1,9 +1,12 @@
 import streamlit as st
+from nba_api.stats.static import players
 
 from player_last_stats import player_last_stats
 from get_mp4_urls import get_mp4_urls
 from get_player_image import get_player_image
-from nba_api.stats.static import players
+from video_player_module import generate_video_player_5
+
+
 
 st.set_page_config(layout="wide")
 
@@ -13,15 +16,19 @@ active_players= players.get_active_players()
 list_active_players = [player['full_name'] for player in active_players]
 
 
-##### to do ###
+##### lots to do ####
 # remove the error/warning message when selectbox are not filled
 
-# Display 3 stars pictures and main stats (last game PTS, RBD, AST)
+# CSS
 
+# Display 3 star players pictures and main stats (last game PTS, RBD, AST)
 # when you click on a picture you launch the viewer with all the selectbox defined
+
 # Add a PLUS button to add another player
 
 # Display last scores of the day
+
+# Add a video at the end of the sequence
 
 
 player_picked = st.selectbox(
@@ -70,7 +77,7 @@ option = st.selectbox(
     placeholder="Select a sequences options...",
 )
 
-# Function to get the videos of the selected gamey for the player
+# Function to get the videos of the selected game for the player
 video_event_df = get_mp4_urls(player_id, game_id, game_location, option)
 
 video_urls = video_event_df['video'].to_list()
@@ -80,48 +87,19 @@ st.write(f'There is {len(video_urls)} sequences')
 #video_urls.append("https://www.youtube.com/watch?v=3Qz1GMpOtUY")
 
 # Convert Python list of URLs to a JavaScript-compatible array
-video_urls_js = ','.join(f'"{url}"' for url in video_urls)
+video_urls_js = ','.join(f'"{url}"' for url in video_urls) # needed for the first video player
 
-# HTML and JavaScript for the smooth video transition with preloading
-video_player_html = f"""
-<video id="videoPlayer" width="700" height="400" controls autoplay>
-  <source id="videoSource" src="{video_urls[0]}" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+# Load the video player
+video_player_html = generate_video_player_5(video_urls, video_urls_js)
+#video_player_html = generate_video_player_3(video_urls)
 
-<script>
-    const videoUrls = [{video_urls_js}];
-    let currentVideoIndex = 0;
-    const videoPlayer = document.getElementById("videoPlayer");
-    const videoSource = document.getElementById("videoSource");
-
-    // Function to preload the next video
-    function preloadNextVideo() {{
-        if (currentVideoIndex + 1 < videoUrls.length) {{
-            const nextVideo = document.createElement('video');
-            nextVideo.src = videoUrls[currentVideoIndex + 1];
-            nextVideo.preload = 'auto'; // preload next video
-            nextVideo.load();  // Start loading the next video
-        }}
-    }}
-
-    // Handle video end and preload the next video
-    videoPlayer.onended = function() {{
-        currentVideoIndex++;
-        if (currentVideoIndex < videoUrls.length) {{
-            videoSource.src = videoUrls[currentVideoIndex];
-            videoPlayer.load();  // Reload the video player with the new source
-            videoPlayer.play();  // Play the next video
-            preloadNextVideo();  // Preload the next video in the background
-        }}
-    }};
-
-    // Preload the second video when the first one starts playing
-    videoPlayer.onplay = function() {{
-        preloadNextVideo();
-    }};
-</script>
-"""
 # Display the video player in Streamlit
 if st.button("Play sequences", type="primary"):
     st.components.v1.html(video_player_html, height=500)
+
+
+# Module of data analysis
+
+
+
+# Modeling

@@ -7,18 +7,18 @@ from nba_api.stats.endpoints import playbyplayv2
 
 
 def get_mp4_urls(player_id, game_id, game_location, option):
-    ### Function to get the URL of the video of the player picked, need the game_id and the player_id
-    ### get the list of URLs of the video part of interest, could be improve with the EVENTMSGACTIONTYPE
-    ### to select only some type of actions
+    '''
+    Function to get the URL of the video of the player picked, need the game_id and the player_id
+    get the list of URLs of the video part of interest, could be improve with the EVENTMSGACTIONTYPE
+    to select only some type of actions
+    '''
 
     # get all the pbp of the game
     pbp = playbyplayv2.PlayByPlayV2(game_id)
     pbp = pbp.get_data_frames()[0]
-    #pbp.shape
 
     # select rows in pbp_player containing Name of the player
     # I choose to select only the 2 players involved to limit the number of actions
-     #pbp_player.shape
 
     # option to choose what to select, many possibilities
     if option == 'Full': # Full option = all the sequences
@@ -39,13 +39,10 @@ def get_mp4_urls(player_id, game_id, game_location, option):
 
     # Should be other options...
 
-    #pbp_player.shape
-
     # event num list with video flag
     event_id_list = pbp_player[pbp_player['VIDEO_AVAILABLE_FLAG']==1]['EVENTNUM'].tolist()
 
     # for loop to get all the video url
-
     headers = {
         'Host': 'stats.nba.com',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0',
@@ -69,8 +66,6 @@ def get_mp4_urls(player_id, game_id, game_location, option):
         video_urls = json['resultSets']['Meta']['videoUrls']
         playlist = json['resultSets']['playlist']
         video_event_list.append({'video': video_urls[0]['lurl'], 'desc': playlist[0]['dsc']})
-
-    #print(video_event_list)
 
     video_event_df = pd.DataFrame(video_event_list)
 

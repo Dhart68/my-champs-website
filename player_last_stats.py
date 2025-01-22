@@ -2,6 +2,7 @@
 
 from nba_api.stats.static import players
 from nba_api.stats.endpoints import playergamelog
+from nba_api.stats.endpoints import BoxScoreSummaryV2
 
 def player_last_stats(player_picked):
 
@@ -17,11 +18,24 @@ def player_last_stats(player_picked):
     last_5_games['location'] = last_5_games['MATCHUP'].apply(lambda x: "home" if 'vs' in x else "away")
 
     # get the score of the games
+    last_5_games['score']='not found'
+
+    for index, row in last_5_games.iterrows():
+        game_id = row['Game_ID']
+        box_score = BoxScoreSummaryV2(game_id=game_id)
+        # Extract game data
+        game_box = box_score.get_normalized_dict()
+
+        score_0 = game_box['LineScore'][0]['PTS'] # position of the linescore is not link with the name of the team or the location of the game
+        score_1 = game_box['LineScore'][1]['PTS'] # to make it better needs couple of test (if) it will take to much time, i give up for now
+
+        last_5_games.loc[index, 'score'] = f'{score_0}-{score_1}'
+
 
     # Reorder the columns
-    last_5_games = last_5_games[['GAME_DATE','Game_ID', 'MATCHUP','WL','location', 'MIN','PTS', 'REB',
+    last_5_games = last_5_games[['GAME_DATE', 'Game_ID', 'MATCHUP', 'location', 'score', 'WL', 'MIN', 'PTS', 'REB',
                                'AST', 'STL', 'BLK', 'FGA', 'FG_PCT', 'FG3A',
-                               'FG3_PCT', 'FTA','FT_PCT', 'OREB', 'DREB', 'TOV', 'PF', 'PLUS_MINUS']]
+                               'FG3_PCT', 'FTA', 'FT_PCT', 'OREB', 'DREB', 'TOV', 'PF', 'PLUS_MINUS']]
 
     last_5_games.reset_index(drop=True, inplace=True)
 

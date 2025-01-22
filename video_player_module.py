@@ -284,11 +284,14 @@ def generate_video_player_5(video_urls, video_urls_js): # Mistral
     """
     Generate HTML and JavaScript for a video player.
     """
+
     return f"""
-<video id="videoPlayer" width="700" height="400" controls autoplay>
-  <source id="videoSource" src="{video_urls[0]}" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<div id="videoContainer" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <video id="videoPlayer" width="800" height="800" controls autoplay>
+        <source id="videoSource" src="{video_urls[0]}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
 
 <script>
     const videoUrls = [{video_urls_js}];
@@ -350,10 +353,10 @@ def generate_video_player_5(video_urls, video_urls_js): # Mistral
         const x = event.clientX - rect.left; // x position within the element
         const width = rect.width;
 
-        if (x < width / 2) {{
+        if (x < width / 3) {{
             // Click on the left half
             loadAndPlayPreviousVideo();
-        }} else {{
+        }} else if (x > width / 1.4) {{
             // Click on the right half
             loadAndPlayNextVideo();
         }}

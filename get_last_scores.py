@@ -3,6 +3,7 @@
 
 
 import requests
+import pandas as pd
 
 def get_last_scores():
     # Fetch the content
@@ -15,6 +16,10 @@ def get_last_scores():
 
     scores = []
     lines = [line for line in games_lines if line.strip()] # remove empty lines
+    number_of_games = int(len(lines)/2)
+
+    scores_df = pd.DataFrame()
+    white_col = pd.DataFrame({"white": ['','']})
 
     # Iterate through lines and parse
     for i in range(0, len(lines)-1,2):  # Each game spans two lines
@@ -33,8 +38,11 @@ def get_last_scores():
             "Team": team2_name,
             "Total": int(team2_data[0]),
             }
-
+        #text horizonatl for banner
         scores.append(f'{team1_name} : {team1["Total"]} - {team2["Total"]} : {team2_name}')
 
+        # DF
+        scores_df = pd.concat([scores_df, pd.DataFrame([team1, team2]), white_col], axis = 1)
 
-    return games_date, scores
+
+    return games_date, number_of_games, scores, scores_df

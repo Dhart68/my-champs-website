@@ -38,6 +38,10 @@ def get_mp4_urls(player_id, game_id, game_location, option):
             pbp_player = pbp_player[(pbp_player['HOMEDESCRIPTION'].str.contains('|'.join(Remove_terms), na=False) == False) ]
 
     # Should be other options...
+    # ['Full', 'Best', 'FG', 'AST','BLOCK']
+    #if option == 'FG':
+        # select video_event_pd where desc does not contain remove terms
+    #    pbp_player = pbp[(pbp['PLAYER1_ID'] == int(player_id))
 
     # event num list with video flag
     event_id_list = pbp_player[pbp_player['VIDEO_AVAILABLE_FLAG']==1]['EVENTNUM'].tolist()

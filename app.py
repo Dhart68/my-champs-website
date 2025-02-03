@@ -54,16 +54,21 @@ colA, colB, colC, colD, colE = st.columns(5)
 [picked_players, picked_players_info] = get_3_best_players(playerS_name)
 images_picked = picked_players['img']
 players_names = picked_players['player_name']
+df1=picked_players_info[picked_players_info['Name'] == players_names[0].lower()][['JERSEY','PTS','REB','AST']]
+df2=picked_players_info[picked_players_info['Name'] == players_names[1].lower()][['JERSEY','PTS','REB','AST']]
+df3=picked_players_info[picked_players_info['Name'] == players_names[2].lower()][['JERSEY','PTS','REB','AST']]
 
 with colB:
     st.image(images_picked[0], caption=players_names[0].title(), width=250)
-    st.dataframe(picked_players_info[picked_players_info['Name'] == players_names[0].lower()][['PTS','REB','AST']], hide_index=True, height=60)
+    st.dataframe(df1, hide_index=True, height=20)
 
 with colC:
     st.image(images_picked[1], caption=players_names[1].title(), width=250)
+    st.dataframe(df2, hide_index=True, height=20)
 
 with colD:
     st.image(images_picked[2], caption=players_names[2].title(), width=250)
+    st.dataframe(df3, hide_index=True, height=30)
 
 #with colE:
 
@@ -126,7 +131,7 @@ if player_picked:
         with col1:
             option = st.selectbox(
                 label = 'Select a sequences option',
-                options = ['Full', 'Best', 'FG', 'AST','BLOCK'],
+                options = ['Full', 'Best', 'FGA', 'FGM', 'AST', 'REB', 'BLOCK'],
                 index=None,
                 placeholder="Select a sequences option...",
                 label_visibility = 'collapsed'

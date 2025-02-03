@@ -38,10 +38,62 @@ def get_mp4_urls(player_id, game_id, game_location, option):
             pbp_player = pbp_player[(pbp_player['HOMEDESCRIPTION'].str.contains('|'.join(Remove_terms), na=False) == False) ]
 
     # Should be other options...
-    # ['Full', 'Best', 'FG', 'AST','BLOCK']
-    #if option == 'FG':
+    if option == 'FGA':
         # select video_event_pd where desc does not contain remove terms
-    #    pbp_player = pbp[(pbp['PLAYER1_ID'] == int(player_id))
+        pbp_player = pbp[(pbp['PLAYER1_ID'] == int(player_id))]
+
+        selected_terms = ['PTS', '3PT', 'Shot']
+
+        if game_location == 'away':
+            pbp_player = pbp_player[(pbp_player['VISITORDESCRIPTION'].str.contains('|'.join(selected_terms), na=False) == True) ]
+        if game_location == 'home':
+            pbp_player = pbp_player[(pbp_player['HOMEDESCRIPTION'].str.contains('|'.join(selected_terms), na=False) == True) ]
+
+    if option == 'FGM':
+        # select video_event_pd where desc does not contain remove terms
+        pbp_player = pbp[(pbp['PLAYER1_ID'] == int(player_id))]
+
+        selected_terms = ['PTS']
+
+        if game_location == 'away':
+            pbp_player = pbp_player[(pbp_player['VISITORDESCRIPTION'].str.contains('|'.join(selected_terms), na=False) == True) ]
+        if game_location == 'home':
+            pbp_player = pbp_player[(pbp_player['HOMEDESCRIPTION'].str.contains('|'.join(selected_terms), na=False) == True) ]
+
+    if option == 'AST':
+        # select video_event_pd where desc does not contain remove terms
+        pbp_player = pbp[(pbp['PLAYER2_ID'] == int(player_id))]
+
+        selected_terms = ['AST']
+
+        if game_location == 'away':
+            pbp_player = pbp_player[(pbp_player['VISITORDESCRIPTION'].str.contains('|'.join(selected_terms), na=False) == True) ]
+        if game_location == 'home':
+            pbp_player = pbp_player[(pbp_player['HOMEDESCRIPTION'].str.contains('|'.join(selected_terms), na=False) == True) ]
+
+    if option == 'REB':
+        # select video_event_pd where desc does not contain remove terms
+        pbp_player = pbp[(pbp['PLAYER1_ID'] == int(player_id))]
+
+        selected_terms = ['REBOUND']
+
+        if game_location == 'away':
+            pbp_player = pbp_player[(pbp_player['VISITORDESCRIPTION'].str.contains('|'.join(selected_terms), na=False) == True) ]
+        if game_location == 'home':
+            pbp_player = pbp_player[(pbp_player['HOMEDESCRIPTION'].str.contains('|'.join(selected_terms), na=False) == True) ]
+
+    if option == 'BLOCK':
+        # select video_event_pd where desc does not contain remove terms
+        pbp_player = pbp[(pbp['PLAYER1_ID'] == int(player_id)) |
+                         (pbp['PLAYER2_ID'] == int(player_id)) |
+                         (pbp['PLAYER3_ID'] == int(player_id)) ]
+
+        selected_terms = ['BLOCK']
+
+        if game_location == 'away':
+            pbp_player = pbp_player[(pbp_player['VISITORDESCRIPTION'].str.contains('|'.join(selected_terms), na=False) == True) ]
+        if game_location == 'home':
+            pbp_player = pbp_player[(pbp_player['HOMEDESCRIPTION'].str.contains('|'.join(selected_terms), na=False) == True) ]
 
     # event num list with video flag
     event_id_list = pbp_player[pbp_player['VIDEO_AVAILABLE_FLAG']==1]['EVENTNUM'].tolist()

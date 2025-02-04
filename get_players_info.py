@@ -6,13 +6,12 @@ from nba_api.stats.endpoints import commonplayerinfo
 
 
 from get_player_image import get_player_image
-from get_mp4_urls import get_mp4_urls
 
 
-def get_3_best_players(list_of_players_name):
-    playerS_name=pd.DataFrame(list_of_players_name, columns=['player_name'])
+def get_players_info(list_of_players_name):
+    playerS_name = pd.DataFrame(list_of_players_name, columns=['player_name'])
 
-    picked_players=pd.DataFrame(columns=['player_name','player_id', 'img', 'game_id', 'location', 'video_urls'])
+    picked_players = pd.DataFrame(columns=['player_name','player_id', 'img', 'game_id', 'location', 'video_urls'])
     picked_players_info = pd.DataFrame(columns=['Name', 'Birthday', 'PTS', 'AST', 'REB', 'COUNTRY', 'HEIGHT', 'WEIGHT', 'JERSEY', 'POSITION', 'DRAFT_YEAR', 'DRAFT_ROUND', 'DRAFT_NUMBER'])
 
     for index, player_name in playerS_name.iterrows():

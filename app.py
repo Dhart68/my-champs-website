@@ -9,13 +9,13 @@ from get_player_image import get_player_image
 from video_player_module import generate_video_player
 from display_news_tickers import display_news_ticker
 from get_last_scores import get_last_scores
-from get_3_best_players import get_3_best_players
+from get_players_info import get_players_info
+from get_best_players_day import get_best_players_day
 
 st.set_page_config(layout="wide")
 
 active_players= players.get_active_players()
 list_active_players = [player['full_name'] for player in active_players]
-
 
 ##### lots to do ####
 # Cookie to recognize the user or account?
@@ -36,27 +36,34 @@ with col_00:
 #    st.table(scores_df)#, hide_index=True,  height=30)
 
 # top 10
-top_10_url = 'https://www.nba.com/watch/video/fridays-top-plays-80?plsrc=nba&collection=more-to-watch'
+top_10_url = 'https://www.nba.com/watch/video/mondays-top-plays-84?plsrc=nba&collection=more-to-watch'
 # https://www.nba.com/watch/video/sundays-top-plays-74?plsrc=nba&collection=more-to-watch
 # https://www.nba.com/watch/video/saturdays-top-plays-250125?plsrc=nba&collection=more-to-watch
 
 with col_01:
-    st.link_button("Top 10", top_10_url)
+    #st.image('https://cdn.nba.com/manage/2025/02/Top10Plays2.4.25.png')
+    #st.link_button("Top 10", top_10_url)
+    st.markdown("[![Foo](https://cdn.nba.com/manage/2025/02/Top10Plays2.4.25.png)](https://www.nba.com/watch/video/mondays-top-plays-84?plsrc=nba&collection=more-to-watch)")
 
-# Display 3 star players pictures and main stats (last game PTS, RBD, AST)
+
+# Display 4 best players of the day pictures and main stats (last game PTS, RBD, AST)
 # when you click on a picture you launch the viewer with all the selectbox defined
-playerS_name=['victor wembanyama', 'bilal coulibaly', 'moussa diabate']
+Four_best_day = get_best_players_day()
+
+playerS_name=Four_best_day['Formatted_name'].to_list()
 
 # Create 4 columns
 colA, colB, colC, colD, colE = st.columns(5)
 # for the 3 best players + one empty to fill by the user
 # each column = image + nom
-[picked_players, picked_players_info] = get_3_best_players(playerS_name)
+[picked_players, picked_players_info] = get_players_info(playerS_name)
 images_picked = picked_players['img']
 players_names = picked_players['player_name']
 df1=picked_players_info[picked_players_info['Name'] == players_names[0].lower()][['JERSEY','PTS','REB','AST']]
+# add the scores of the day in a second line
 df2=picked_players_info[picked_players_info['Name'] == players_names[1].lower()][['JERSEY','PTS','REB','AST']]
 df3=picked_players_info[picked_players_info['Name'] == players_names[2].lower()][['JERSEY','PTS','REB','AST']]
+df4=picked_players_info[picked_players_info['Name'] == players_names[3].lower()][['JERSEY','PTS','REB','AST']]
 
 with colB:
     st.image(images_picked[0], caption=players_names[0].title(), width=250)
@@ -70,8 +77,9 @@ with colD:
     st.image(images_picked[2], caption=players_names[2].title(), width=250)
     st.dataframe(df3, hide_index=True, height=30)
 
-#with colE:
-
+with colE:
+    st.image(images_picked[3], caption=players_names[3].title(), width=250)
+    st.dataframe(df4, hide_index=True, height=30)
 
 # Add a video at the end of the sequence
 
@@ -96,6 +104,11 @@ if player_picked:
     # Function to get the stats of the 3 last games for the player picked
     [last_5_games, player_id] = player_last_stats(player_picked)
 
+    # get the season stats of the player
+    [picked_p, picked_p_info] = get_players_info([player_picked.lower()])
+    p_name = picked_p['player_name']
+    dfp=picked_p_info[picked_p_info['Name'] == p_name[0].lower()][['JERSEY','PTS','REB','AST']]
+
     # get the image of the player and display it
     image_picked = get_player_image(player_id)
 
@@ -104,6 +117,7 @@ if player_picked:
     # Display image in the first column
     with colA:
         st.image(image_picked, caption=player_caption, width=250)
+        st.dataframe(dfp, hide_index=True, height=20)
 
     # Display DataFrame in the second column
     with col2:

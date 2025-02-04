@@ -41,7 +41,7 @@ def get_last_scores():
         #text horizonatl for banner
         scores.append(f'{team1_name} : {team1["Total"]} - {team2["Total"]} : {team2_name}')
 
-        # DF
+        # DataFrame for 2 lines scores
         scores_df = pd.concat([scores_df, pd.DataFrame([team1, team2]), white_col], axis = 1)
 
 

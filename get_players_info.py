@@ -7,6 +7,7 @@ from nba_api.stats.endpoints import commonplayerinfo
 
 from get_player_image import get_player_image
 
+## issue with the jr. players
 
 def get_players_info(list_of_players_name):
     playerS_name = pd.DataFrame(list_of_players_name, columns=['player_name'])

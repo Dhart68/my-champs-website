@@ -14,28 +14,35 @@ from get_best_players_day import get_best_players_day
 
 st.set_page_config(layout="wide")
 
+# get the list of active players
 active_players= players.get_active_players()
 list_active_players = [player['full_name'] for player in active_players]
 
 ##### lots to do ####
 # Cookie to recognize the user or account?
+# to do : add the scores of the day in a second line
+# top 10 # to do, number changing awkwardly
+# to do :  Add a video at the end of the sequence
+# to do: Conditional logic to handle the case where no option is selected
 
-# Create 2 columns for scores and top 10
+
+## Create 2 columns for scores of the day and top 10
 col_00, col_01 = st.columns([9,1], vertical_alignment="center")
 
-# Display last scores of the day
+# get last scores of the day
 [games_date, number_of_games, scores, scores_df] = get_last_scores()
 
 # Display the news ticker
 news = [games_date, str(scores), games_date, str(scores)]
+
 with col_00:
   display_news_ticker(news_items=news, duration=30)
 
-# Display the dataframe
-#with col_00:
+# Display game score as a dataframe
+# with col_00:
 #    st.table(scores_df)#, hide_index=True,  height=30)
 
-# top 10
+## top 10 # to do, number changing awkwardly
 top_10_url = 'https://www.nba.com/watch/video/mondays-top-plays-84?plsrc=nba&collection=more-to-watch'
 # https://www.nba.com/watch/video/sundays-top-plays-74?plsrc=nba&collection=more-to-watch
 # https://www.nba.com/watch/video/saturdays-top-plays-250125?plsrc=nba&collection=more-to-watch
@@ -46,21 +53,22 @@ with col_01:
     st.markdown("[![Foo](https://cdn.nba.com/manage/2025/02/Top10Plays2.4.25.png)](https://www.nba.com/watch/video/mondays-top-plays-84?plsrc=nba&collection=more-to-watch)")
 
 
-# Display 4 best players of the day pictures and main stats (last game PTS, RBD, AST)
-# when you click on a picture you launch the viewer with all the selectbox defined
+## Display 4 best players of the day pictures and main stats (last game PTS, RBD, AST)
+# to do : when you click on a picture you launch the viewer with all the selectbox defined
 Four_best_day = get_best_players_day()
 
 playerS_name=Four_best_day['Formatted_name'].to_list()
 
-# Create 4 columns
+# Create 5 columns
 colA, colB, colC, colD, colE = st.columns(5)
-# for the 3 best players + one empty to fill by the user
-# each column = image + nom
+
+# for the 4 best players + one empty to fill by the user
+# each column = image + nom + stats
 [picked_players, picked_players_info] = get_players_info(playerS_name)
 images_picked = picked_players['img']
 players_names = picked_players['player_name']
 df1=picked_players_info[picked_players_info['Name'] == players_names[0].lower()][['JERSEY','PTS','REB','AST']]
-# add the scores of the day in a second line
+# to do : add the scores of the day in a second line
 df2=picked_players_info[picked_players_info['Name'] == players_names[1].lower()][['JERSEY','PTS','REB','AST']]
 df3=picked_players_info[picked_players_info['Name'] == players_names[2].lower()][['JERSEY','PTS','REB','AST']]
 df4=picked_players_info[picked_players_info['Name'] == players_names[3].lower()][['JERSEY','PTS','REB','AST']]
@@ -81,7 +89,6 @@ with colE:
     st.image(images_picked[3], caption=players_names[3].title(), width=250)
     st.dataframe(df4, hide_index=True, height=30)
 
-# Add a video at the end of the sequence
 
 # Create 2 columns for menu and stats
 col1, col2 = st.columns([1,6])
@@ -99,7 +106,8 @@ with col1:
             label_visibility = 'collapsed'
         )
 
-# Conditional logic to handle the case where no option is selected
+# to do: Conditional logic to handle the case where no option is selected
+
 if player_picked:
     # Function to get the stats of the 3 last games for the player picked
     [last_5_games, player_id] = player_last_stats(player_picked)
@@ -123,10 +131,6 @@ if player_picked:
     with col2:
         st.dataframe(last_5_games, hide_index=True, height=210)
 
-
-    ### to do ###
-    # Add the scores
-
     # Select a game and find location
     with col1:
         game_id = st.selectbox(
@@ -136,7 +140,6 @@ if player_picked:
             placeholder = "Select a Game_ID...",
             label_visibility = 'collapsed'
         )
-
 
     if game_id:
         game_location = last_5_games[last_5_games['Game_ID']==game_id]['location'].values[0]
@@ -167,8 +170,7 @@ if player_picked:
             # Load the video player
             video_player_html = generate_video_player(video_urls, video_urls_js)
 
-
-            # Display the video player in Streamlit
+            # Display the video player
             go_button = 0
             with col1:
                 if st.button(f"Play {len(video_urls)} sequences", type="primary"):

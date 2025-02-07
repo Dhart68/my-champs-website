@@ -1,4 +1,6 @@
 import streamlit as st
+import pandas as pd
+
 from nba_api.stats.static import players
 from nba_api.stats.endpoints import BoxScoreMatchupsV3
 
@@ -20,11 +22,14 @@ list_active_players = [player['full_name'] for player in active_players]
 
 ##### lots to do ####
 # Cookie to recognize the user or account?
-# to do : add the scores of the day in a second line
+
 # top 10 # to do, number changing awkwardly
 # to do :  Add a video at the end of the sequence
 # to do: Conditional logic to handle the case where no option is selected
 
+# to do: Wemby Block party ==> New feature select a player select BLoCK, DUNK et periode ==> Clip
+
+# Dunk Score
 
 ## Create 2 columns for scores of the day and top 10
 col_00, col_01 = st.columns([9,1], vertical_alignment="center")
@@ -67,27 +72,43 @@ colA, colB, colC, colD, colE = st.columns(5)
 [picked_players, picked_players_info] = get_players_info(playerS_name)
 images_picked = picked_players['img']
 players_names = picked_players['player_name']
-df1=picked_players_info[picked_players_info['Name'] == players_names[0].lower()][['JERSEY','PTS','REB','AST']]
+df1_s = picked_players_info[picked_players_info['Name'] == players_names[0].lower()][['PTS','REB','AST']]
+df1_day = Four_best_day[Four_best_day['Formatted_name'] == players_names[0].lower()][['PTS','TRB','AST']]
+df1 = pd.concat([df1_s,df1_day.rename(columns={'TRB':'REB'})], ignore_index=True)
+df1.insert(0, 'Period', ['Season', 'Today'])
+
+
 # to do : add the scores of the day in a second line
-df2=picked_players_info[picked_players_info['Name'] == players_names[1].lower()][['JERSEY','PTS','REB','AST']]
-df3=picked_players_info[picked_players_info['Name'] == players_names[2].lower()][['JERSEY','PTS','REB','AST']]
-df4=picked_players_info[picked_players_info['Name'] == players_names[3].lower()][['JERSEY','PTS','REB','AST']]
+df2_s = picked_players_info[picked_players_info['Name'] == players_names[1].lower()][['PTS','REB','AST']]
+df2_day = Four_best_day[Four_best_day['Formatted_name'] == players_names[1].lower()][['PTS','TRB','AST']]
+df2 = pd.concat([df2_s,df2_day.rename(columns={'TRB':'REB'})], ignore_index=True)
+df2.insert(0, 'Period', ['Season', 'Today'])
+
+df3_s = picked_players_info[picked_players_info['Name'] == players_names[2].lower()][['PTS','REB','AST']]
+df3_day = Four_best_day[Four_best_day['Formatted_name'] == players_names[2].lower()][['PTS','TRB','AST']]
+df3 = pd.concat([df3_s,df3_day.rename(columns={'TRB':'REB'})], ignore_index=True)
+df3.insert(0, 'Period', ['Season', 'Today'])
+
+df4_s = picked_players_info[picked_players_info['Name'] == players_names[3].lower()][['PTS','REB','AST']]
+df4_day = Four_best_day[Four_best_day['Formatted_name'] == players_names[3].lower()][['PTS','TRB','AST']]
+df4 = pd.concat([df4_s,df4_day.rename(columns={'TRB':'REB'})], ignore_index=True)
+df4.insert(0, 'Period', ['Season', 'Today'])
 
 with colB:
-    st.image(images_picked[0], caption=players_names[0].title(), width=250)
-    st.dataframe(df1, hide_index=True, height=20)
+    st.image(images_picked[0], caption = f"{players_names[0].title()}  #  {picked_players_info[picked_players_info['Name'] == players_names[0].lower()]['JERSEY'][0]}", width=250)
+    st.dataframe(df1, hide_index=True, height=110)
 
 with colC:
-    st.image(images_picked[1], caption=players_names[1].title(), width=250)
-    st.dataframe(df2, hide_index=True, height=20)
+    st.image(images_picked[1], caption = f"{players_names[1].title()}  #  {picked_players_info[picked_players_info['Name'] == players_names[1].lower()]['JERSEY'][1]}", width=250)
+    st.dataframe(df2, hide_index=True, height=110)
 
 with colD:
-    st.image(images_picked[2], caption=players_names[2].title(), width=250)
-    st.dataframe(df3, hide_index=True, height=30)
+    st.image(images_picked[2], caption = f"{players_names[2].title()}  #  {picked_players_info[picked_players_info['Name'] == players_names[2].lower()]['JERSEY'][2]}", width=250)
+    st.dataframe(df3, hide_index=True, height=110)
 
 with colE:
-    st.image(images_picked[3], caption=players_names[3].title(), width=250)
-    st.dataframe(df4, hide_index=True, height=30)
+    st.image(images_picked[3], caption = f"{players_names[3].title()}  #  {picked_players_info[picked_players_info['Name'] == players_names[3].lower()]['JERSEY'][3]}", width=250)
+    st.dataframe(df4, hide_index=True, height=110)
 
 
 # Create 2 columns for menu and stats

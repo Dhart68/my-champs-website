@@ -1,42 +1,68 @@
-### Function do get info an NBA player
-
 from nba_api.stats.static import players
-from nba_api.stats.endpoints import playergamelog
-from nba_api.stats.endpoints import BoxScoreSummaryV2
+from nba_api.stats.endpoints import playergamelog, BoxScoreSummaryV2
+import pandas as pd
 
-def player_last_stats(player_picked):
+# Version pimped by Chat GPT to work even it not in the regular season
 
-    # Get info about the player
-    player_id = players.find_players_by_full_name(player_picked)[0]['id']
+def player_last_stats(player_picked, n_games=5):
+    # Find player id
+    found = players.find_players_by_full_name(player_picked)
+    if not found:
+        raise ValueError(f"Player '{player_picked}' not found")
 
-    #Get the player's game logs for the current season
-    game_log = playergamelog.PlayerGameLog(player_id=player_id)  # Adjust the season if needed
-    games_data = game_log.get_data_frames()[0]  # Retrieve the DataFrame
+    player_id = found[0]['id']
 
-    # Reorder the columns and add location column
-    last_5_games = games_data.head(5).copy()
-    last_5_games['location'] = last_5_games['MATCHUP'].apply(lambda x: "home" if 'vs' in x else "away")
+    # Season types to try (order = priority)
+    season_types = [
+        "Regular Season",
+        "Playoffs",
+        "In Season Tournament",
+        "Pre Season",
+        "All Star"
+    ]
 
-    # get the score of the games
-    last_5_games['score']='not found'
+    games_data = pd.DataFrame()
 
-    for index, row in last_5_games.iterrows():
+    # Try each season type until we find data
+    for s_type in season_types:
+        try:
+            game_log = playergamelog.PlayerGameLog(player_id=player_id, season_type_all_star=s_type)
+            df = game_log.get_data_frames()[0]
+            if not df.empty:
+                games_data = df
+                active_season_type = s_type
+                break
+        except Exception:
+            continue
+
+    if games_data.empty:
+        print(f"⚠️ No games found for {player_picked}")
+        return [pd.DataFrame(), player_id]
+
+    # Process last n games
+    last_n_games = games_data.head(n_games).copy()
+    last_n_games['location'] = last_n_games['MATCHUP'].apply(lambda x: "home" if 'vs' in x else "away")
+    last_n_games['score'] = 'not found'
+
+    # Add score from box score
+    for index, row in last_n_games.iterrows():
         game_id = row['Game_ID']
-        box_score = BoxScoreSummaryV2(game_id=game_id)
-        # Extract game data
-        game_box = box_score.get_normalized_dict()
+        try:
+            box_score = BoxScoreSummaryV2(game_id=game_id).get_normalized_dict()
+            score_0 = box_score['LineScore'][0]['PTS']
+            score_1 = box_score['LineScore'][1]['PTS']
+            last_n_games.loc[index, 'score'] = f'{score_0}-{score_1}'
+        except Exception:
+            pass
 
-        score_0 = game_box['LineScore'][0]['PTS'] # position of the linescore is not link with the name of the team or the location of the game
-        score_1 = game_box['LineScore'][1]['PTS'] # to make it better needs couple of test (if) it will take to much time, i give up for now
+    # Reorder columns
+    cols = ['GAME_DATE', 'Game_ID', 'MATCHUP', 'location', 'score', 'WL', 'MIN', 'PTS', 'REB',
+            'AST', 'STL', 'BLK', 'FGA', 'FG_PCT', 'FG3A', 'FG3_PCT', 'FTA',
+            'FT_PCT', 'OREB', 'DREB', 'TOV', 'PF', 'PLUS_MINUS']
+    last_n_games = last_n_games[[c for c in cols if c in last_n_games.columns]]
 
-        last_5_games.loc[index, 'score'] = f'{score_0}-{score_1}'
+    last_n_games.reset_index(drop=True, inplace=True)
 
+    print(f"✅ Found games in {active_season_type}")
 
-    # Reorder the columns
-    last_5_games = last_5_games[['GAME_DATE', 'Game_ID', 'MATCHUP', 'location', 'score', 'WL', 'MIN', 'PTS', 'REB',
-                               'AST', 'STL', 'BLK', 'FGA', 'FG_PCT', 'FG3A',
-                               'FG3_PCT', 'FTA', 'FT_PCT', 'OREB', 'DREB', 'TOV', 'PF', 'PLUS_MINUS']]
-
-    last_5_games.reset_index(drop=True, inplace=True)
-
-    return [last_5_games, player_id]
+    return [last_n_games, player_id]

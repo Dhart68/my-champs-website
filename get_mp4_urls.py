@@ -124,5 +124,9 @@ def get_mp4_urls(player_id, game_id, game_location, option):
         video_event_list.append({'video': video_urls[0]['lurl'], 'desc': playlist[0]['dsc']})
 
     video_event_df = pd.DataFrame(video_event_list)
+    video_event_df['player_id'] = player_id
+    video_event_df['game_id'] = game_id
+    video_event_df['game_location'] = game_location
+    video_event_df['option'] = option
 
     return video_event_df

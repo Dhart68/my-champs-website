@@ -1,5 +1,7 @@
 # MyChamps : Each day, get their best, their worst, just select your player
-
+# Light versions:
+# V0 : no choice about the game and type of video, provide the clip of last game directly after choosing the player
+# V1 : to do: import and store clips for the 4 best players and players clickable
 
 import streamlit as st
 import pandas as pd
@@ -47,40 +49,7 @@ active_players= players.get_active_players()
 list_active_players = [player['full_name'] for player in active_players]
 
 ##### lots to do ####
-# Trop lent: faire plus simple: (le 5 octobre 2025)
-#               - preloader les 4 joueurs tous les jours
-#                   > trouver quand a lieu le refresh des data sur nba api
-#                    R: for Regular season and Playoff :
-#                       > Updated within a few minutes after each game finishes (usually 5–15 minutes after the box score appears on NBA.com).
-#               - ne pas donner le choix du match et des types de video
-#               - loader les video des que le choix du joueur est fait
-#               - lancer une video d'attente (pub?)
-##
-##
-# 4 octobre 2025
-# # If the season hasn’t started yet (like now), or you want Summer League, Preseason, In-Season Tournament, All-Star, etc., that endpoint will return nothing.
-# should define parameter to look info regarding the schedule of the day by getting the date of today and then define the parameter, to avoid test in the function
-# player last stat
-#
-# when load the page = clip to wait
-
-# + 4 best performers + Top 10 + Dunk Party + Block Party
-
-# Preload data from best players etc... (best option)
-# - get the time of the last game to scrap the results
-# - When preloaded => picture of the player is clickable and launch the video
-
-# Cookie to recognize the user or account?
-
-# top 10 # to do, number changing awkwardly
-# to do :  Add a video at the end of the sequence
-# to do: Conditional logic to handle the case where no option is selected
-
-# to do: Wemby Block party ==> New feature select a player select BLoCK, DUNK et periode ==> Clip
-
-# Dunk Score : 5 octobre 2025 ChatGPT : " Unfortunately, the NBA’s public stats API (and thus nba_api) does not expose a direct “dunk count” or “dunk score” field in any of its standard endpoints like playergamelog, boxscore, or shotchartdetail."
-
-# Blocks Time : clip of all blocks of the night
+#  Voir original app.py
 
 ## Create 2 columns for scores of the day and top 10
 col_00, col_01 = st.columns([9,1], vertical_alignment="center")
@@ -205,64 +174,46 @@ if player_picked:
         st.dataframe(last_n_games, hide_index=True, height=210)
 
     # Select a game and find location
+    game_id = last_n_games['Game_ID'][0]
+    print(game_id)
+
+    game_location = last_n_games[last_n_games['Game_ID']==game_id]['location'].values[0]
+
+    # options = ['Full', 'Best', 'FGA', 'FGM', 'AST', 'REB', 'BLOCK']
+
+    option = 'Best'
+
+    # Function to get the videos of the selected game for the player
+    with st.spinner("Fetching player data..."): # “Loading” indicator
+        video_event_df = get_mp4_urls(player_id, game_id, game_location, option) # 131570 primitive calls) in 77.593 seconds pour 12 sequences// 334404 primitive calls) in 137.805 seconds pour 44 sequences
+
+        video_urls = video_event_df['video'].to_list()
+
+
+    # Convert Python list of URLs to a JavaScript-compatible array
+    video_urls_js = ','.join(f'"{url}"' for url in video_urls) # needed for the video player js
+
+    # Load the video player
+    video_player_html = generate_video_player(video_urls, video_urls_js) # 0 second
+
+    # Display the video player
+    go_button = 0
     with col1:
-        game_id = st.selectbox(
-            label = 'Select a Game',
-            options = last_n_games['Game_ID'],
-            index = None,
-            placeholder = "Select a Game_ID...",
-            label_visibility = 'collapsed'
-        )
+        if st.button(f"Play {len(video_urls)} sequences", type="primary"):
+            start = time.time()
+            go_button = 1
 
-    if game_id:
-        game_location = last_n_games[last_n_games['Game_ID']==game_id]['location'].values[0]
-
-        # Choose an option
-        with col1:
-            option = st.selectbox(
-                label = 'Select a sequences option',
-                options = ['Full', 'Best', 'FGA', 'FGM', 'AST', 'REB', 'BLOCK'],
-                index=None,
-                placeholder="Select a sequences option...",
-                label_visibility = 'collapsed'
-            )
-
-        # Conditional logic to handle the case where no option is selected
-        if option:
-            # Function to get the videos of the selected game for the player
-            video_event_df = get_mp4_urls(player_id, game_id, game_location, option) # 131570 primitive calls) in 77.593 seconds pour 12 sequences// 334404 primitive calls) in 137.805 seconds pour 44 sequences
-
-            video_urls = video_event_df['video'].to_list()
-
-            # Add a video at the end of the list
-            # video_urls.append("https://www.youtube.com/watch?v=3Qz1GMpOtUY")
-
-            # Convert Python list of URLs to a JavaScript-compatible array
-            video_urls_js = ','.join(f'"{url}"' for url in video_urls) # needed for the video player js
-
-            # Load the video player
-            video_player_html = generate_video_player(video_urls, video_urls_js) # 0 second
-
-            # Display the video player
-            go_button = 0
-            with col1:
-                if st.button(f"Play {len(video_urls)} sequences", type="primary"):
-                   start = time.time()
-                   go_button = 1
-
-            if go_button == 1:
-                st.components.v1.html(video_player_html, height=1000)
-                st.dataframe(video_event_df, hide_index=True)
-                end = time.time()
-                print(f"Load {len(video_urls)} sequences >>> Execution time: {end - start:.4f} seconds") #0.0024 seconds
+    if go_button == 1:
+        st.components.v1.html(video_player_html, height=1000)
+        st.dataframe(video_event_df, hide_index=True)
+        end = time.time()
+        print(f"Load {len(video_urls)} sequences >>> Execution time: {end - start:.4f} seconds") #0.0024 seconds
 
 # Module of data analysis
 ## plotly to make the chart settable
 ## display evolution of min per game over time
 ## as for babies, add mean and tendancy for player at the same position
 ## forecast the previous chart
-
-# playbyplayv3_output to get the position and distance of the shots
 
 # ML/AI
 ## to think about it

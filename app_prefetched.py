@@ -1,5 +1,6 @@
 # MyChamps : Each day, get their best, their worst, just select your player
-
+# Streamlit app read local or cached NBA data (e.g. CSV or database)
+# Need update_nba_data.py
 
 import streamlit as st
 import pandas as pd
@@ -15,7 +16,7 @@ from video_player_module import generate_video_player
 from display_news_tickers import display_news_ticker
 from get_last_scores import get_last_scores
 from get_players_info import get_players_info
-from get_best_players_day import get_best_players_day
+#from get_best_players_day import get_best_players_day
 
 
 ## To test the timing of the app
@@ -47,40 +48,7 @@ active_players= players.get_active_players()
 list_active_players = [player['full_name'] for player in active_players]
 
 ##### lots to do ####
-# Trop lent: faire plus simple: (le 5 octobre 2025)
-#               - preloader les 4 joueurs tous les jours
-#                   > trouver quand a lieu le refresh des data sur nba api
-#                    R: for Regular season and Playoff :
-#                       > Updated within a few minutes after each game finishes (usually 5–15 minutes after the box score appears on NBA.com).
-#               - ne pas donner le choix du match et des types de video
-#               - loader les video des que le choix du joueur est fait
-#               - lancer une video d'attente (pub?)
-##
-##
-# 4 octobre 2025
-# # If the season hasn’t started yet (like now), or you want Summer League, Preseason, In-Season Tournament, All-Star, etc., that endpoint will return nothing.
-# should define parameter to look info regarding the schedule of the day by getting the date of today and then define the parameter, to avoid test in the function
-# player last stat
-#
-# when load the page = clip to wait
-
-# + 4 best performers + Top 10 + Dunk Party + Block Party
-
-# Preload data from best players etc... (best option)
-# - get the time of the last game to scrap the results
-# - When preloaded => picture of the player is clickable and launch the video
-
-# Cookie to recognize the user or account?
-
-# top 10 # to do, number changing awkwardly
-# to do :  Add a video at the end of the sequence
-# to do: Conditional logic to handle the case where no option is selected
-
-# to do: Wemby Block party ==> New feature select a player select BLoCK, DUNK et periode ==> Clip
-
-# Dunk Score : 5 octobre 2025 ChatGPT : " Unfortunately, the NBA’s public stats API (and thus nba_api) does not expose a direct “dunk count” or “dunk score” field in any of its standard endpoints like playergamelog, boxscore, or shotchartdetail."
-
-# Blocks Time : clip of all blocks of the night
+# voir app.py
 
 ## Create 2 columns for scores of the day and top 10
 col_00, col_01 = st.columns([9,1], vertical_alignment="center")
@@ -99,19 +67,21 @@ with col_00:
 #    st.table(scores_df)#, hide_index=True,  height=30)
 
 ## top 10 # to do, number changing awkwardly
-top_10_url = 'https://www.nba.com/watch/video/mondays-top-plays-84?plsrc=nba&collection=more-to-watch'
+# top_10_url = 'https://www.nba.com/watch/video/mondays-top-plays-84?plsrc=nba&collection=more-to-watch'
 # https://www.nba.com/watch/video/sundays-top-plays-74?plsrc=nba&collection=more-to-watch
 # https://www.nba.com/watch/video/saturdays-top-plays-250125?plsrc=nba&collection=more-to-watch
 
-with col_01:
+#with col_01:
     #st.image('https://cdn.nba.com/manage/2025/02/Top10Plays2.4.25.png')
     #st.link_button("Top 10", top_10_url)
-    st.markdown("[![Foo](https://cdn.nba.com/manage/2025/02/Top10Plays2.4.25.png)](https://www.nba.com/watch/video/mondays-top-plays-84?plsrc=nba&collection=more-to-watch)")
+    #st.markdown("[![Foo](https://cdn.nba.com/manage/2025/02/Top10Plays2.4.25.png)](https://www.nba.com/watch/video/mondays-top-plays-84?plsrc=nba&collection=more-to-watch)")
 
 
 ## Display 4 best players of the day pictures and main stats (last game PTS, RBD, AST)
 # to do : when you click on a picture you launch the viewer with all the selectbox defined
-Four_best_day = get_best_players_day() # 1 seconde
+#Four_best_day = get_best_players_day() # 1 seconde
+
+Four_best_day = pd.read_csv('data/Four_best_day.csv')
 
 playerS_name=Four_best_day['Formatted_name'].to_list()
 
@@ -120,15 +90,17 @@ colA, colB, colC, colD, colE = st.columns(5)
 
 # for the 4 best players + one empty to fill by the user
 # each column = image + nom + stats
-[picked_players, picked_players_info] = get_players_info(playerS_name) # (1786290 primitive calls) in 7.985 seconds
+picked_players = pd.read_csv('data/picked_players.csv')
+picked_players_info = pd.read_csv('data/picked_players_info.csv')
+picked_players_video_event_df = pd.read_csv("data/picked_players_video_event_df.csv")
 
 images_picked = picked_players['img']
 players_names = picked_players['player_name']
+
 df1_s = picked_players_info[picked_players_info['Name'] == players_names[0].lower()][['PTS','REB','AST']]
 df1_day = Four_best_day[Four_best_day['Formatted_name'] == players_names[0].lower()][['PTS','TRB','AST']]
 df1 = pd.concat([df1_s,df1_day.rename(columns={'TRB':'REB'})], ignore_index=True)
 df1.insert(0, 'Period', ['Season', 'Today'])
-
 
 # to do : add the scores of the day in a second line
 df2_s = picked_players_info[picked_players_info['Name'] == players_names[1].lower()][['PTS','REB','AST']]
@@ -146,21 +118,52 @@ df4_day = Four_best_day[Four_best_day['Formatted_name'] == players_names[3].lowe
 df4 = pd.concat([df4_s,df4_day.rename(columns={'TRB':'REB'})], ignore_index=True)
 df4.insert(0, 'Period', ['Season', 'Today'])
 
-with colB:
-    st.image(images_picked[0], caption = f"{players_names[0].title()}  #  {picked_players_info[picked_players_info['Name'] == players_names[0].lower()]['JERSEY'][0]}", width=250)
-    st.dataframe(df1, hide_index=True, height=110)
+# --- Create columns dynamically ---
+cols = st.columns(len(players_names))
 
-with colC:
-    st.image(images_picked[1], caption = f"{players_names[1].title()}  #  {picked_players_info[picked_players_info['Name'] == players_names[1].lower()]['JERSEY'][1]}", width=250)
-    st.dataframe(df2, hide_index=True, height=110)
+# --- Prepare placeholders for states ---
+play_clicked = None
+video_player_html = None
+video_event_df = None
 
-with colD:
-    st.image(images_picked[2], caption = f"{players_names[2].title()}  #  {picked_players_info[picked_players_info['Name'] == players_names[2].lower()]['JERSEY'][2]}", width=250)
-    st.dataframe(df3, hide_index=True, height=110)
+# --- Loop over players ---
+for i, (col, player_name, df) in enumerate(zip(cols, players_names, [df1, df2, df3, df4])):
+    with col:
+        # --- Player image & info ---
+        jersey_number = picked_players_info.loc[
+            picked_players_info['Name'] == player_name.lower(), 'JERSEY'
+        ].iloc[0]
+        st.image(
+            images_picked[i],
+            caption=f"{player_name.title()}  #  {jersey_number}",
+            width=250
+        )
+        st.dataframe(df, hide_index=True, height=110)
 
-with colE:
-    st.image(images_picked[3], caption = f"{players_names[3].title()}  #  {picked_players_info[picked_players_info['Name'] == players_names[3].lower()]['JERSEY'][3]}", width=250)
-    st.dataframe(df4, hide_index=True, height=110)
+        # --- Video data ---
+        video_event_df_i = picked_players_video_event_df[
+            picked_players_video_event_df['player_name'] == player_name.lower()
+        ]
+        video_urls = video_event_df_i['video'].to_list()
+        video_urls_js = ','.join(f'"{url}"' for url in video_urls)
+        video_player_html_i = generate_video_player(video_urls, video_urls_js)
+
+        # --- Unique button ---
+        if st.button(
+            f"Play {len(video_urls)} sequences",
+            type="primary",
+            key=f"play_btn_{i}_{player_name}"
+        ):
+            play_clicked = i
+            video_player_html = video_player_html_i
+            video_event_df = video_event_df_i
+
+# --- Full-width video player zone (after the loop) ---
+if play_clicked is not None:
+    st.markdown("---")
+    st.components.v1.html(video_player_html, height=1000)
+    st.dataframe(video_event_df, hide_index=True)
+
 
 
 # Create 2 columns for menu and stats
@@ -261,8 +264,6 @@ if player_picked:
 ## display evolution of min per game over time
 ## as for babies, add mean and tendancy for player at the same position
 ## forecast the previous chart
-
-# playbyplayv3_output to get the position and distance of the shots
 
 # ML/AI
 ## to think about it

@@ -61,6 +61,6 @@ def get_players_info(list_of_players_name):
         picked_players.loc[index,'location']  = last_game_location
 
     # list of the last video with get_mp4_urls()
-        #picked_players.loc[index,'video_urls'] = [get_mp4_urls(player_id, last_game_id, last_game_location, 'Full').to_dict()]
+        picked_players.loc[index,'video_urls'] = [get_mp4_urls(player_id, last_game_id, last_game_location, 'Full').to_dict()]
 
     return [picked_players, picked_players_info]

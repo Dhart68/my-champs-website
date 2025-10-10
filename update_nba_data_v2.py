@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 from get_best_players_day import get_best_players_day
-from get_players_info import get_players_info
+from get_players_info_v2 import get_players_info_v2
 
 ### Add superstars
 #my_champs_superstars = ["Jokic, Nikola ","Doncic, Luka", "Durant, Kevin", "Curry, Stephen", "Sengun, Alperen"]
@@ -14,11 +14,13 @@ from get_players_info import get_players_info
 
 #champs_list = my_champs_superstars + my_champs_french
 
-best_players_day = get_best_players_day(4)
+best_players_day = get_best_players_day(number = 1)
 
 playerS_name=best_players_day['Formatted_name'].to_list()
 
-[picked_players, picked_players_info, picked_players_video_event_df] = get_players_info(playerS_name)
+print(playerS_name)
+
+[picked_players, picked_players_info, picked_players_video_event_df] = get_players_info_v2(playerS_name)
 
 
 # Get today's date in a clean format (e.g. 2025-10-09)

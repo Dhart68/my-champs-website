@@ -4,6 +4,8 @@ def generate_video_player(video_urls, video_urls_js): # Mistral
     """
     Generate HTML and JavaScript for a video player.
     """
+    if not video_urls:
+        return "<p>No videos available for this player.</p>"
 
     return f"""
 <div id="videoContainer" style="display: flex; justify-content: center; align-items: center; height: 100vh;">

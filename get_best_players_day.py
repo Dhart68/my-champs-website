@@ -6,7 +6,7 @@ import requests
 import pandas as pd
 
 
-def get_best_players_day(number = 4):
+def get_best_players_day(number = 4, champs_list = []):
 
     """
     Function to get a dataframe of the 5 (or more it's a param) players with a high performance and 2 lists
@@ -49,18 +49,11 @@ def get_best_players_day(number = 4):
     df['MyScore'] = df['PTS']+df['AST']+df['TRB']
     Four_best_day = df.sort_values(by='MyScore', ascending=False).head(number)
 
-
-    ### Add superstars
-    my_champs_superstars = ["Jokic, Nikola ","Doncic, Luka", "Durant, Kevin", "Curry, Stephen", "Sengun, Alperen"]
-
-    ### French players
-    my_champs_french = ["Wembanyama, Victor", "Gobert, Rudy", "Yabusele, Guerschon", "Sarr, Alex", "Coulibaly, Bilal", "Beringer, Joan"]
-
-    champs_list = my_champs_superstars + my_champs_french
-
-    best_players_day = df[df['NAME'].isin(champs_list)]
-
-    best_players_day = pd.concat([Four_best_day,best_players_day]).drop_duplicates()
+    if champs_list:
+        best_players_day = df[df['NAME'].isin(champs_list)]
+        best_players_day = pd.concat([Four_best_day,best_players_day]).drop_duplicates()
+    else:
+        best_players_day = Four_best_day
 
     best_players_day['Formatted_name'] = 'name'
 
@@ -76,5 +69,6 @@ def get_best_players_day(number = 4):
       else:
         best_players_day.loc[index, 'Formatted_name'] = " ".join(row['NAME'].split(", ")[::-1]).lower()
 
+    print(best_players_day)
 
     return best_players_day

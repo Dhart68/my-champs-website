@@ -6,10 +6,11 @@ from nba_api.stats.endpoints import commonplayerinfo
 
 from get_player_image import get_player_image
 from get_mp4_urls import get_mp4_urls
+from get_mp4_urls_v2 import get_mp4_urls_v2
 
 # Version amelioree par ChatGPT
 
-def get_players_info(list_of_players_name):
+def get_players_info_v2(list_of_players_name):
     playerS_name = pd.DataFrame(list_of_players_name, columns=['player_name'])
 
     picked_players = pd.DataFrame(columns=['player_name','player_id', 'img', 'game_id', 'location'])
@@ -83,7 +84,7 @@ def get_players_info(list_of_players_name):
 
                 # --- get video urls
                 # DataFrame of the last video with get_mp4_urls()
-                video_event_df = get_mp4_urls(player_id, last_game_id, last_game_location, 'Full')
+                [video_event_df] = get_mp4_urls_v2(player_id, last_game_id)
                 video_event_df['player_name'] = pname
                 picked_players_video_event_df.append(video_event_df)
                 print(picked_players_video_event_df)

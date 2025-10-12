@@ -1,27 +1,69 @@
 # update_nba_data.py
 import pandas as pd
 from datetime import datetime
-
+import time
 
 from get_best_players_day import get_best_players_day
 from get_players_info_v2 import get_players_info_v2
 
 ### Add superstars
-#my_champs_superstars = ["Jokic, Nikola ","Doncic, Luka", "Durant, Kevin", "Curry, Stephen", "Sengun, Alperen"]
-
+my_champs_superstars = [
+    "Jokic, Nikola",
+    "Gilgeous-Alexander, Shai",
+    "Doncic, Luka",
+    "James, LeBron",
+    "Curry, Stephen",
+    "Durant, Kevin",
+    "Antetokounmpo, Giannis",
+    "Edwards, Anthony",
+    "Embiid, Joel",
+    "Tatum, Jayson",
+    "Davis, Anthony",
+    "Booker, Devin",
+    "Morant, Ja",
+    "Butler, Jimmy",
+    "Lillard, Damian",
+    "Wembanyama, Victor",
+    "Mitchell, Donovan",
+    "George, Paul",
+    "Towns, Karl-Anthony",
+    "Irving, Kyrie",
+]
 ### French players
-#my_champs_french = ["Wembanyama, Victor", "Gobert, Rudy", "Yabusele, Guerschon", "Sarr, Alex", "Coulibaly, Bilal", "Beringer, Joan"]
+my_champs_french = [
+    "Wembanyama, Victor",
+    "Gobert, Rudy",
+    "Batum, Nicolas",
+    "Yabusele, Guerschon",
+    "Coulibaly, Bilal",
+    "Dieng, Ousmane",
+    "Luwawu-Cabarrot, Timothé",
+    "Sarr, Olivier",
+    "Risacher, Zaccharie",
+    "Sarr, Alexandre",
+    "Sarr, Olivier",
+    "Essengue, Noa",
+    "Rupert, Rayan",
+    "Cissoko, Sidy",
+    "Beringer, Joan"
+]
 
-#champs_list = my_champs_superstars + my_champs_french
+champs_list = my_champs_superstars + my_champs_french
 
-best_players_day = get_best_players_day(number = 1)
+start_time = time.time()
+
+best_players_day = get_best_players_day(number = 5, champs_list=champs_list)
 
 playerS_name=best_players_day['Formatted_name'].to_list()
 
 print(playerS_name)
+print(time.ctime())
 
 [picked_players, picked_players_info, picked_players_video_event_df] = get_players_info_v2(playerS_name)
 
+end_time = time.time() # or time.perf_counter()
+elapsed_time = end_time - start_time
+print(f"Execution took: {elapsed_time:.6f} seconds")
 
 # Get today's date in a clean format (e.g. 2025-10-09)
 today = datetime.today().strftime("%Y-%m-%d")

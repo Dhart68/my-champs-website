@@ -1,4 +1,5 @@
 import pandas as pd
+import time
 
 from nba_api.stats.static import players
 from nba_api.stats.endpoints import playergamelog
@@ -20,6 +21,7 @@ def get_players_info_v2(list_of_players_name):
     for index, player_name in playerS_name.iterrows():
         pname = player_name['player_name']
         print(pname)
+        print(time.ctime())
 
         # --- find player id ---
         found = players.find_players_by_full_name(pname)
@@ -71,7 +73,7 @@ def get_players_info_v2(list_of_players_name):
         try:
             game_log = playergamelog.PlayerGameLog(player_id=player_id, season_type_all_star='Pre Season') # to adjust
             games_data = game_log.get_data_frames()[0]
-            print(f"inside the laat game info > {pname}")
+            print(f"inside the last game info > {pname}")
 
 
             if not games_data.empty:

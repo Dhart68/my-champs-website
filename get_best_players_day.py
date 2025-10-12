@@ -6,7 +6,7 @@ import requests
 import pandas as pd
 
 
-def get_best_players_day(number = 4, champs_list = []):
+def get_best_players_day(number = 5, champs_list = []):
 
     """
     Function to get a dataframe of the 5 (or more it's a param) players with a high performance and 2 lists
@@ -48,6 +48,7 @@ def get_best_players_day(number = 4, champs_list = []):
 
     df['MyScore'] = df['PTS']+df['AST']+df['TRB']
     Four_best_day = df.sort_values(by='MyScore', ascending=False).head(number)
+    print(Four_best_day)
 
     if champs_list:
         best_players_day = df[df['NAME'].isin(champs_list)]
@@ -56,6 +57,8 @@ def get_best_players_day(number = 4, champs_list = []):
         best_players_day = Four_best_day
 
     best_players_day['Formatted_name'] = 'name'
+
+    print(Four_best_day)
 
     # loop to reorder name properly when ther is a Jr in the name
     for index, row in best_players_day.iterrows():

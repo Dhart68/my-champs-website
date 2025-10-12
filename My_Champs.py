@@ -18,8 +18,6 @@ from display_news_tickers import display_news_ticker
 from get_last_scores import get_last_scores
 from get_players_info import get_players_info
 from select_sequences import select_sequences
-#from get_best_players_day import get_best_players_day
-
 
 
 st.set_page_config(
@@ -33,10 +31,6 @@ st.markdown("""
 This is your main page.
 Use the sidebar on the left to navigate between pages.
 """)
-
-# get the list of active players
-active_players= players.get_active_players() # not updated
-list_active_players = [player['full_name'] for player in active_players]
 
 ##### lots to do ####
 # voir app.py
@@ -53,20 +47,6 @@ news = [games_date, str(scores), games_date, str(scores)]
 with col_00:
   display_news_ticker(news_items=news, duration=30)
 
-# Display game score as a dataframe
-# with col_00:
-#    st.table(scores_df)#, hide_index=True,  height=30)
-
-## top 10 # to do, number changing awkwardly
-# top_10_url = 'https://www.nba.com/watch/video/mondays-top-plays-84?plsrc=nba&collection=more-to-watch'
-# https://www.nba.com/watch/video/sundays-top-plays-74?plsrc=nba&collection=more-to-watch
-# https://www.nba.com/watch/video/saturdays-top-plays-250125?plsrc=nba&collection=more-to-watch
-
-#with col_01:
-    #st.image('https://cdn.nba.com/manage/2025/02/Top10Plays2.4.25.png')
-    #st.link_button("Top 10", top_10_url)
-    #st.markdown("[![Foo](https://cdn.nba.com/manage/2025/02/Top10Plays2.4.25.png)](https://www.nba.com/watch/video/mondays-top-plays-84?plsrc=nba&collection=more-to-watch)")
-
 
 ## Display 5 best players of the day pictures and main stats (last game PTS, RBD, AST)
 # to do : when you click on a picture you launch the viewer with all the selectbox defined
@@ -76,6 +56,7 @@ with col_00:
 
 # Get today's date in a clean format (e.g. 2025-10-09)
 today = datetime.today().strftime("%Y-%m-%d")
+#today = "2025-10-10"
 
 # Get today local files with date in name ---
 input_file_1 = f"data/best_players_day_{today}.csv"
@@ -125,15 +106,13 @@ for player_name in players_names:
 
 # --- Precompute sequences for each player and each option ---
 
-options = ["Best", "FGA", "FGM", "AST", "REB", "BLOCK"]
+options = ["Full", "Best", "FGA", "FGM", "AST", "REB", "BLOCK"]
 video_options_dict = {}
 
 for player_name in players_names:
     player_videos = {}
-    #player_id = player_ids[player_name]   # however you get it
     game_location = picked_players.loc[picked_players["player_name"] == player_name.lower(), "location"].iloc[0]
     player_id = picked_players.loc[picked_players["player_name"] == player_name.lower(), "player_id"].iloc[0]
-    print(game_location)
 
     for opt in options:
         df_opt = select_sequences(picked_players_video_event_df, player_id, game_location, opt)
@@ -141,9 +120,8 @@ for player_name in players_names:
 
     video_options_dict[player_name.lower()] = player_videos
 
-print(video_options_dict)
-
 # ---  Display player cards ---
+
 play_clicked = None
 video_player_html = None
 video_event_df = None
@@ -173,31 +151,41 @@ for i, (col, player_name, df) in enumerate(zip(player_cols, players_names, playe
         st.dataframe(df, hide_index=True, height=110)
 
         # Buttons for options
-        if st.button(f"Full {player_name}", key=f"full_{i}"):
+        if st.button(f"Full - {len(video_options_dict[player_name]["Full"]['video'])} sequences", key=f"full_{i}", width="stretch"):
             st.session_state["selected_player"] = player_name
             st.session_state["selected_option"] = "Full"
 
-        if st.button(f"Best {player_name}", key=f"best_{i}"):
+        if st.button(f"Best - {len(video_options_dict[player_name]["Best"]['video'])} sequences", key=f"best_{i}", width="stretch"):
             st.session_state["selected_player"] = player_name
             st.session_state["selected_option"] = "Best"
 
-        # --- Video preparation ---
-        #video_event_df_i = picked_players_video_event_df[picked_players_video_event_df['player_name'] == player_name.lower()]
-        #video_urls = video_event_df_i['video'].to_list()
-        #video_urls_js = ','.join(f'"{url}"' for url in video_urls)
-        #video_player_html_i = generate_video_player(video_urls, video_urls_js)
+        if st.button(f"FGA - {len(video_options_dict[player_name]["FGA"]['video'])} sequences", key=f"fga_{i}", width="stretch"):
+            st.session_state["selected_player"] = player_name
+            st.session_state["selected_option"] = "FGA"
 
+        if st.button(f"FGM - {len(video_options_dict[player_name]["FGM"]['video'])} sequences", key=f"fgm_{i}", width="stretch"):
+            st.session_state["selected_player"] = player_name
+            st.session_state["selected_option"] = "FGM"
 
+        if st.button(f"AST - {len(video_options_dict[player_name]["AST"]['video'])} sequences", key=f"ast_{i}", width="stretch"):
+            st.session_state["selected_player"] = player_name
+            st.session_state["selected_option"] = "AST"
+
+        if st.button(f"REB - {len(video_options_dict[player_name]["REB"]['video'])} sequences", key=f"rbd_{i}", width="stretch"):
+            st.session_state["selected_player"] = player_name
+            st.session_state["selected_option"] = "REB"
+
+        if st.button(f"BLOCK - {len(video_options_dict[player_name]["BLOCK"]['video'])} sequences", key=f"block_{i}", width="stretch"):
+            st.session_state["selected_player"] = player_name
+            st.session_state["selected_option"] = "BLOCK"
 
 # --- Below all players ---
 if st.session_state["selected_player"]:
     player = st.session_state["selected_player"]
     option = st.session_state["selected_option"]
-    print(option)
 
     # Get URLs directly from your dictionary
     video_urls = video_options_dict[player][option]['video'].to_list()
-    print(video_urls)
 
     # Prepare JS and HTML player
     video_urls_js = ','.join(f'"{url}"' for url in video_urls)

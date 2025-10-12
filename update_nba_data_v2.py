@@ -68,18 +68,30 @@ print(f"Execution took: {elapsed_time:.6f} seconds")
 # Get today's date in a clean format (e.g. 2025-10-09)
 today = datetime.today().strftime("%Y-%m-%d")
 
-# --- 3. Save to local files with date in name ---
-output_file_1 = f"data/best_players_day_{today}.csv"
+# --- 3. Save to backup local files with date in name ---
+output_file_11 = f"backup_data/best_players_day_{today}.csv"
+best_players_day.to_csv(output_file_11, index=False)
+
+output_file_12 = f"backup_data/picked_players_{today}.csv"
+picked_players.to_csv(output_file_12, index=False)
+
+output_file_13 = f"backup_data/picked_players_info_{today}.csv"
+picked_players_info.to_csv(output_file_13, index=False)
+
+output_file_14 = f"backup_data/picked_players_video_event_df_{today}.csv"
+picked_players_video_event_df.to_csv(output_file_14, index=False)
+
+# --- 4. Save to local files for udpdate files of the app ---
+output_file_1 = f"data/best_players_day.csv"
 best_players_day.to_csv(output_file_1, index=False)
 
-output_file_2 = f"data/picked_players_{today}.csv"
+output_file_2 = f"data/picked_players.csv"
 picked_players.to_csv(output_file_2, index=False)
 
-output_file_3 = f"data/picked_players_info_{today}.csv"
+output_file_3 = f"data/picked_players_info.csv"
 picked_players_info.to_csv(output_file_3, index=False)
 
-output_file_4 = f"data/picked_players_video_event_df_{today}.csv"
+output_file_4 = f"data/picked_players_video_event_df.csv"
 picked_players_video_event_df.to_csv(output_file_4, index=False)
-
 
 print(f"✅ Data updated")

@@ -6,17 +6,10 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 
-from nba_api.stats.static import players
-from nba_api.stats.endpoints import BoxScoreMatchupsV3
 
-
-from player_last_stats import player_last_stats
-from get_mp4_urls import get_mp4_urls
-from get_player_image import get_player_image
 from video_player_module import generate_video_player
 from display_news_tickers import display_news_ticker
 from get_last_scores import get_last_scores
-from get_players_info import get_players_info
 from select_sequences import select_sequences
 
 
@@ -50,32 +43,36 @@ with col_00:
 
 ## Display 5 best players of the day pictures and main stats (last game PTS, RBD, AST)
 # to do : when you click on a picture you launch the viewer with all the selectbox defined
-#Four_best_day = get_best_players_day() # 1 seconde
+#Five_best_day = get_best_players_day() # 1 seconde
 
-# Get last data loaded with update_nba_data
-
-# Get today's date in a clean format (e.g. 2025-10-09)
-today = datetime.today().strftime("%Y-%m-%d")
-#today = "2025-10-10"
 
 # Get today local files with date in name ---
-input_file_1 = f"data/best_players_day_{today}.csv"
-Four_best_day = pd.read_csv(input_file_1)[0:6]
+input_file_1 = f"data/best_players_day.csv"
+Five_best_day = pd.read_csv(input_file_1)[0:6]
 
-input_file_2 = f"data/picked_players_{today}.csv"
+# Test is data is up to date
+today = datetime.today().strftime("%Y-%m-%d")
+if today == Five_best_day['DATE'][0]:
+    print(f"Data up to date {today}")
+else:
+    print(f"Old data : {Five_best_day['DATE'][0]} - Please update")
+
+
+# Get today local files with date in name ---
+input_file_2 = f"data/picked_players.csv"
 picked_players = pd.read_csv(input_file_2)[0:6].reset_index(drop=True)
 
-input_file_3 = f"data/picked_players_info_{today}.csv"
+input_file_3 = f"data/picked_players_info.csv"
 picked_players_info = pd.read_csv(input_file_3)[0:6]
 
-input_file_4 = f"data/picked_players_video_event_df_{today}.csv"
+input_file_4 = f"data/picked_players_video_event_df.csv"
 picked_players_video_event_df = pd.read_csv(input_file_4)
 picked_players_video_event_df = picked_players_video_event_df.dropna(subset=['video']).reset_index(drop=True)
 
-# for the 4 best players + one empty to fill by the user
+# For 5 best players
 # each column = image + nom + stats
 
-playerS_name=Four_best_day['Formatted_name'].to_list()
+playerS_name=Five_best_day['Formatted_name'].to_list()
 images_picked = picked_players['img']
 players_names = picked_players['player_name']
 
@@ -91,8 +88,8 @@ for player_name in players_names:
         picked_players_info['Name'] == player_name.lower()
     ][['PTS', 'REB', 'AST']]
 
-    df_today = Four_best_day[
-        Four_best_day['Formatted_name'] == player_name.lower()
+    df_today = Five_best_day[
+        Five_best_day['Formatted_name'] == player_name.lower()
     ][['PTS', 'TRB', 'AST']].rename(columns={'TRB': 'REB'})
 
     # Combine

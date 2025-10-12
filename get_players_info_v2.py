@@ -6,7 +6,6 @@ from nba_api.stats.endpoints import playergamelog
 from nba_api.stats.endpoints import commonplayerinfo
 
 from get_player_image import get_player_image
-from get_mp4_urls import get_mp4_urls
 from get_mp4_urls_v2 import get_mp4_urls_v2
 
 # Version amelioree par ChatGPT

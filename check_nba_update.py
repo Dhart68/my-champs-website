@@ -23,3 +23,5 @@ if previous != last_modified:
     state_file.write_text(last_modified)
 else:
     print("🟢 No change detected.")
+
+# does not work

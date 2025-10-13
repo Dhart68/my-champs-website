@@ -22,9 +22,6 @@ ENV/
 # --- Data files ---
 backup_data/
 
-# workflows >>>> temporary
-.github/workflows/
-
 # --- Jupyter notebooks checkpoints ---
 .ipynb_checkpoints/
 

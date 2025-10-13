@@ -1,7 +1,10 @@
 def generate_video_player(video_urls, video_urls_js):
     """
-    Generate responsive HTML and JavaScript for a video player that adapts
-    to mobile and desktop screens, with chained autoplay.
+    Generate a video player:
+    - Large on desktop
+    - Positioned at top of view (Streamlit page)
+    - Fullscreen optional via native controls
+    - Safe for mobile
     """
     if not video_urls:
         return "<p>No videos available for this player.</p>"
@@ -12,14 +15,12 @@ def generate_video_player(video_urls, video_urls_js):
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    margin: 20px 0;
     width: 100%;
-    background-color: black;
-    overflow: hidden;
 }}
 
 #videoPlayer {{
-    width: 80%;
+    width: 90%;       /* Large on desktop */
     max-width: 1600px;
     height: auto;
     border-radius: 8px;
@@ -27,8 +28,8 @@ def generate_video_player(video_urls, video_urls_js):
 
 @media (max-width: 768px) {{
     #videoPlayer {{
-        width: 100%;
-        height: 100%;
+        width: 100%;   /* Full width on mobile */
+        height: auto;
         border-radius: 0;
     }}
 }}
@@ -47,29 +48,6 @@ def generate_video_player(video_urls, video_urls_js):
     const videoPlayer = document.getElementById("videoPlayer");
     const videoSource = document.getElementById("videoSource");
 
-    function isMobile() {{
-        return /Mobi|Android/i.test(navigator.userAgent);
-    }}
-
-    function showRotateHint() {{
-        alert("Rotate your phone to landscape for a better view!");
-    }}
-
-    function requestFullscreenLandscape() {{
-        if (isMobile() && videoPlayer.requestFullscreen) {{
-            videoPlayer.requestFullscreen()
-                .then(() => {{
-                    if (screen.orientation && screen.orientation.lock) {{
-                        screen.orientation.lock('landscape').catch(err => {{
-                            console.log("Orientation lock not allowed:", err.message);
-                            showRotateHint();
-                        }});
-                    }}
-                }})
-                .catch(err => console.log("Fullscreen request failed:", err.message));
-        }}
-    }}
-
     function preloadNextVideo() {{
         if (currentVideoIndex + 1 < videoUrls.length) {{
             const nextVideo = document.createElement('video');
@@ -81,53 +59,25 @@ def generate_video_player(video_urls, video_urls_js):
 
     async function loadAndPlay(index) {{
         if (index < 0 || index >= videoUrls.length) return;
-
         currentVideoIndex = index;
         videoSource.src = videoUrls[currentVideoIndex];
         videoPlayer.load();
-
-        try {{
-            await videoPlayer.play();
-        }} catch (err) {{
-            console.warn("Autoplay prevented, waiting for user interaction:", err);
-            videoPlayer.addEventListener('click', () => videoPlayer.play(), {{ once: true }});
-        }}
-
+        try {{ await videoPlayer.play(); }}
+        catch (err) {{ console.warn("Autoplay blocked:", err); }}
         preloadNextVideo();
     }}
 
-    function loadAndPlayNextVideo() {{
-        loadAndPlay(currentVideoIndex + 1);
-    }}
-
-    function loadAndPlayPreviousVideo() {{
-        loadAndPlay(currentVideoIndex - 1);
-    }}
-
-    videoPlayer.onplay = function() {{
-        requestFullscreenLandscape();
-        preloadNextVideo();
-    }};
+    function loadAndPlayNextVideo() {{ loadAndPlay(currentVideoIndex + 1); }}
+    function loadAndPlayPreviousVideo() {{ loadAndPlay(currentVideoIndex - 1); }}
 
     videoPlayer.onended = loadAndPlayNextVideo;
+    videoPlayer.onerror = loadAndPlayNextVideo;
 
-    videoPlayer.onerror = function() {{
-        console.error("Error loading video:", videoPlayer.error);
-        loadAndPlayNextVideo();
-    }};
-
-    function handleVideoClick(event) {{
+    videoPlayer.addEventListener('click', function(e) {{
         const rect = videoPlayer.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const width = rect.width;
-
-        if (x < width / 3) {{
-            loadAndPlayPreviousVideo();
-        }} else if (x > width / 1.4) {{
-            loadAndPlayNextVideo();
-        }}
-    }}
-
-    videoPlayer.addEventListener('click', handleVideoClick);
+        const x = e.clientX - rect.left;
+        if (x < rect.width / 3) loadAndPlayPreviousVideo();
+        else if (x > rect.width * 2 / 3) loadAndPlayNextVideo();
+    }});
 </script>
 """

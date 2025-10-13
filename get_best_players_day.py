@@ -4,7 +4,7 @@
 
 import requests
 import pandas as pd
-
+from datetime import datetime
 
 def get_best_players_day(number = 5, champs_list = []):
 
@@ -46,9 +46,15 @@ def get_best_players_day(number = 5, champs_list = []):
     # Read the data using pandas with fixed-width format
     df = pd.read_fwf(pd.io.common.StringIO("\n".join(data)), names = Col_names, widths = widths_list) # specify the size of the col
 
+    # save the raw file of the day
+    # Get today's date
+    today = datetime.today().strftime("%Y-%m-%d")
+    output_file = f'backup_data/all_players_day_{today}.csv'
+    df.to_csv(output_file, index=False)
+
     df['MyScore'] = df['PTS']+df['AST']+df['TRB']
     Four_best_day = df.sort_values(by='MyScore', ascending=False).head(number)
-    print(Four_best_day)
+
 
     if champs_list:
         best_players_day = df[df['NAME'].isin(champs_list)]

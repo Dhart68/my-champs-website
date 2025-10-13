@@ -11,7 +11,7 @@ from select_sequences import select_sequences
 
 st.title("🏀 Superstars")
 
-st.write("This page displays stats for your selected players.")
+#st.write("This page displays stats for your selected players.")
 
 my_champs_superstars = [
     "Jokic, Nikola",

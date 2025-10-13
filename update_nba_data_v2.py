@@ -40,7 +40,7 @@ my_champs_french = [
     "Luwawu-Cabarrot, Timothé",
     "Sarr, Olivier",
     "Risacher, Zaccharie",
-    "Sarr, Alexandre",
+    "Sarr, Alex",
     "Sarr, Olivier",
     "Essengue, Noa",
     "Rupert, Rayan",

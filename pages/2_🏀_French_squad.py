@@ -10,7 +10,7 @@ from select_sequences import select_sequences
 
 st.title("🏀 French Players")
 
-st.write("This page displays stats for your selected players.")
+#st.write("This page displays stats for your selected players.")
 
 ### French players
 my_champs_french = [
@@ -23,7 +23,7 @@ my_champs_french = [
     "Luwawu-Cabarrot, Timothé",
     "Sarr, Olivier",
     "Risacher, Zaccharie",
-    "Sarr, Alexandre",
+    "Sarr, Alex",
     "Sarr, Olivier",
     "Essengue, Noa",
     "Rupert, Rayan",

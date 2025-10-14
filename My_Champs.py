@@ -6,8 +6,6 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 
-
-
 from display_news_tickers import display_news_ticker
 from get_last_scores import get_last_scores
 from select_sequences import select_sequences
@@ -52,7 +50,6 @@ if today == Five_best_day['DATE'][0]:
 else:
     print(f"Old data : {Five_best_day['DATE'][0]} - Please update")
 
-
 # Get today local files with date in name ---
 input_file_2 = f"data/picked_players.csv"
 picked_players = pd.read_csv(input_file_2)[0:6].reset_index(drop=True)
@@ -66,7 +63,6 @@ picked_players_video_event_df = picked_players_video_event_df.dropna(subset=['vi
 
 # For 5 best players
 # each column = image + nom + stats
-
 playerS_name=Five_best_day['Formatted_name'].to_list()
 images_picked = picked_players['img']
 players_names = picked_players['player_name']
@@ -131,10 +127,15 @@ for i, (col, player_name, df) in enumerate(zip(player_cols, players_names, playe
         # --- Image + stats ---
         mask = picked_players_info['Name'].str.lower() == player_name.lower()
         if mask.any():
-            jersey_number = picked_players_info.loc[mask, 'JERSEY'].iloc[0]
-            draft_year = picked_players_info.loc[mask, 'DRAFT_YEAR'].iloc[0]
-            draft_round = picked_players_info.loc[mask, 'DRAFT_ROUND'].iloc[0]
-            draft_number = picked_players_info.loc[mask, 'DRAFT_NUMBER'].iloc[0]
+            if picked_players_info.loc[mask, 'DRAFT_YEAR'].iloc[0] == "Undrafted":
+                draft_year = "Undrafted"
+                draft_round = 'U'
+                draft_number = 'U'
+            else:
+                jersey_number = picked_players_info.loc[mask, 'JERSEY'].iloc[0]
+                draft_year = picked_players_info.loc[mask, 'DRAFT_YEAR'].iloc[0]
+                draft_round = picked_players_info.loc[mask, 'DRAFT_ROUND'].iloc[0]
+                draft_number = picked_players_info.loc[mask, 'DRAFT_NUMBER'].iloc[0]
 
         else:
             jersey_number = "?"
@@ -145,7 +146,7 @@ for i, (col, player_name, df) in enumerate(zip(player_cols, players_names, playe
             <div style="text-align: center;">
                 <img src="{images_picked.iloc[i]}" width="250"><br>
                 <strong>{player_name.title()}  # {jersey_number}</strong><br>
-                Draft: {draft_year} — Round {draft_round}, Pick {draft_number}
+                Draft: {draft_year} — R: {draft_round}, Pick {draft_number}
             </div>
             """,
             unsafe_allow_html=True

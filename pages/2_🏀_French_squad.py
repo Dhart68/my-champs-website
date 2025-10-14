@@ -8,7 +8,7 @@ from display_news_tickers import display_news_ticker
 from get_last_scores import get_last_scores
 from select_sequences import select_sequences
 
-st.title("🏀 French Players")
+st.title("🏀 Frenchies")
 
 ### French players
 my_champs_french = [
@@ -28,7 +28,10 @@ my_champs_french = [
     "Cissoko, Sidy",
     "Beringer, Joan",
     "Diawara, Mohamed",
-    "Dadiet, Pacome"
+    "Dadiet, Pacome",
+    "Raynaud, Maxime",
+    "Traoré, Nolan",
+    "Penda, Noah"
 
 ]
 

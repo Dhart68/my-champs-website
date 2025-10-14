@@ -28,6 +28,8 @@ my_champs_superstars = [
     "George, Paul",
     "Towns, Karl-Anthony",
     "Irving, Kyrie",
+    "Leonard, Kawhi",
+    "Harden, James"
 ]
 ### French players
 my_champs_french = [
@@ -45,7 +47,13 @@ my_champs_french = [
     "Essengue, Noa",
     "Rupert, Rayan",
     "Cissoko, Sidy",
-    "Beringer, Joan"
+    "Beringer, Joan",
+    "Diawara, Mohamed",
+    "Dadiet, Pacome",
+    "Raynaud, Maxime",
+    "Traoré, Nolan",
+    "Penda, Noah"
+
 ]
 
 champs_list = my_champs_superstars + my_champs_french

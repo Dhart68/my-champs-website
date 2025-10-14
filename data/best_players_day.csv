@@ -1,12 +1,8 @@
 DATE,TM,OPP,NAME,(POS),G,MIN,FG,FGA,FG3,F3A,FT,FTA,OFF,DEF,TRB,AST,PF,DQ,STL,TO,BLK,PTS,MyScore,Formatted_name
-10/12/2025,GS,LAL,"Podziemski, Brandin",(G  ),1,26,10,16,3,7,0,0,0,5,5,8,1,0,1,2,0,23.0,36.0,brandin podziemski
-10/12/2025,MIA,ORL,"Ware, Kel'el",(C  ),1,25,9,17,2,4,4,4,3,7,10,1,0,0,2,1,0,24.0,35.0,kel'el ware
-10/12/2025,CHI,MIL,"Giddey, Josh",(G  ),1,24,4,7,1,3,5,8,0,8,8,7,0,0,0,0,1,14.0,29.0,josh giddey
-10/12/2025,PHO,BRK,"Booker, Devin",(G  ),1,26,4,12,3,5,7,8,1,4,5,5,1,0,1,4,0,18.0,28.0,devin booker
-10/12/2025,BOS,CLE,"White, Derrick",(G  ),1,22,4,9,2,7,6,6,1,6,7,5,1,0,0,3,3,16.0,28.0,derrick white
-10/12/2025,CHI,MIL,"Essengue, Noa",(SUB),1,13,2,4,0,1,1,3,1,1,2,1,1,0,3,0,0,5.0,8.0,noa essengue
-10/12/2025,DEN,LAC,"Jokic, Nikola",(C  ),1,22,6,9,0,2,0,0,1,8,9,6,1,0,1,1,1,12.0,27.0,nikola jokic
-10/12/2025,LAC,DEN,"Batum, Nicolas",(SUB),1,14,0,2,0,2,0,0,0,0,0,0,0,0,0,1,0,0.0,0.0,nicolas batum
-10/12/2025,MIL,CHI,"Antetokounmpo, Giannis",(F  ),1,21,6,10,0,0,1,2,3,7,10,3,3,0,0,1,0,13.0,26.0,giannis antetokounmpo
-10/12/2025,TOR,WAS,"Sarr, Olivier",(SUB),1,18,1,4,0,2,2,2,2,2,4,0,5,0,0,0,3,4.0,8.0,olivier sarr
-10/12/2025,WAS,TOR,"Sarr, Alexandre",(C  ),1,17,4,5,1,1,3,4,0,8,8,0,1,0,1,2,2,12.0,20.0,alexandre sarr
+10/13/2025,SA,IND,"Wembanyama, Victor",(C  ),1,25,9,13,2,3,7,7,2,9,11,4,2,0,3,7,1,27,42,victor wembanyama
+10/13/2025,ATL,MIA,"Toppin, Jacob",(F  ),1,42,9,23,2,9,6,9,0,9,9,5,4,0,1,2,2,26,40,jacob toppin
+10/13/2025,MIN,GUA,"Dillingham, Rob",(G  ),1,28,10,14,4,4,3,4,0,2,2,9,1,0,2,1,0,27,38,rob dillingham
+10/13/2025,IND,SA,"Mathurin, Bennedict",(G  ),1,23,11,12,4,4,5,5,0,4,4,1,4,0,1,3,0,31,36,bennedict mathurin
+10/13/2025,DAL,UTA,"Davis, Anthony",(F  ),1,25,8,14,2,5,7,7,0,6,6,2,0,0,2,1,2,25,33,anthony davis
+10/13/2025,MIN,GUA,"Beringer, Joan",(C  ),1,22,5,8,0,0,0,0,5,5,10,1,1,0,0,2,2,10,21,joan beringer
+10/13/2025,NY,WAS,"Yabusele, Guerschon",(C  ),1,23,4,8,2,5,1,1,4,1,5,2,1,0,0,1,0,11,18,guerschon yabusele

@@ -10,8 +10,6 @@ from select_sequences import select_sequences
 
 st.title("🏀 French Players")
 
-#st.write("This page displays stats for your selected players.")
-
 ### French players
 my_champs_french = [
     "Wembanyama, Victor",
@@ -28,11 +26,15 @@ my_champs_french = [
     "Essengue, Noa",
     "Rupert, Rayan",
     "Cissoko, Sidy",
-    "Beringer, Joan"
+    "Beringer, Joan",
+    "Diawara, Mohamed",
+    "Dadiet, Pacome"
+
 ]
 
 my_champs_french_converted = [" ".join(name.split(", ")[::-1]).lower() for name in my_champs_french]
 
+st.write("This page displays stats for french players of that list {my_champs_french_converted}")
 
 # Get today local files ---
 input_file_1 = f"data/best_players_day.csv"

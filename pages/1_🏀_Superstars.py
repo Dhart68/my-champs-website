@@ -34,10 +34,14 @@ my_champs_superstars = [
     "George, Paul",
     "Towns, Karl-Anthony",
     "Irving, Kyrie",
+    "Leonard, Kawhi",
+    "Harden, James"
 ]
 
 my_champs_superstars_converted = [" ".join(name.split(", ")[::-1]).lower() for name in my_champs_superstars]
 
+
+st.write("This page displays stats for french players of that list {my_champs_superstars_converted}")
 
 # Get today local files ---
 input_file_1 = f"data/best_players_day.csv"

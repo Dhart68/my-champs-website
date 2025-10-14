@@ -10,8 +10,14 @@ from video_player_module import generate_video_player
 st.title("🏀 Rookies 2025")
 
 ### French players
-rookies_2025 = [
-    "Flagg, Cooper"
+international_stars = [
+    "Sengun, Alperen",
+    "Hansen, Yang",
+    "Siakam, Pascal",
+    "Markkanen, Lauri",
+    "Porziņģis, Kristaps ",
+    "Schröder, Dennis",
+    "Wagner,Franz",
+    "Sabonis, Domantas"
     ]
-
 st.write("This page displays stats for your selected players.")

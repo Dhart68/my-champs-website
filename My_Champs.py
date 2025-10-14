@@ -75,13 +75,9 @@ player_dfs = []
 
 for player_name in players_names:
     # Filter data
-    df_season = picked_players_info[
-        picked_players_info['Name'] == player_name.lower()
-    ][['PTS', 'REB', 'AST']]
+    df_season = picked_players_info[picked_players_info['Name'] == player_name.lower()][['PTS', 'REB', 'AST']]
 
-    df_today = Five_best_day[
-        Five_best_day['Formatted_name'] == player_name.lower()
-    ][['PTS', 'TRB', 'AST']].rename(columns={'TRB': 'REB'})
+    df_today = Five_best_day[Five_best_day['Formatted_name'] == player_name.lower()][['PTS', 'TRB', 'AST']].rename(columns={'TRB': 'REB'})
 
     # Combine
     df_player = pd.concat([df_season, df_today], ignore_index=True)
@@ -128,14 +124,13 @@ for i, (col, player_name, df) in enumerate(zip(player_cols, players_names, playe
         mask = picked_players_info['Name'].str.lower() == player_name.lower()
         if mask.any():
             if picked_players_info.loc[mask, 'DRAFT_YEAR'].iloc[0] == "Undrafted":
-                draft_year = "Undrafted"
-                draft_round = 'U'
-                draft_number = 'U'
+                draft_info = "Undrafted"
             else:
                 jersey_number = picked_players_info.loc[mask, 'JERSEY'].iloc[0]
                 draft_year = picked_players_info.loc[mask, 'DRAFT_YEAR'].iloc[0]
                 draft_round = picked_players_info.loc[mask, 'DRAFT_ROUND'].iloc[0]
                 draft_number = picked_players_info.loc[mask, 'DRAFT_NUMBER'].iloc[0]
+                draft_info = f'{draft_year} — R: {draft_round}, Pick {draft_number}'
 
         else:
             jersey_number = "?"
@@ -146,7 +141,7 @@ for i, (col, player_name, df) in enumerate(zip(player_cols, players_names, playe
             <div style="text-align: center;">
                 <img src="{images_picked.iloc[i]}" width="250"><br>
                 <strong>{player_name.title()}  # {jersey_number}</strong><br>
-                Draft: {draft_year} — R: {draft_round}, Pick {draft_number}
+                Draft: {draft_info}
             </div>
             """,
             unsafe_allow_html=True

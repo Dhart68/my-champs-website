@@ -37,8 +37,6 @@ my_champs_french = [
 
 my_champs_french_converted = [" ".join(name.split(", ")[::-1]).lower() for name in my_champs_french]
 
-st.write("This page displays stats for french players of that list {my_champs_french_converted}")
-
 # Get today local files ---
 input_file_1 = f"data/best_players_day.csv"
 df_not_best_performers = pd.read_csv(input_file_1).iloc[5:].reset_index(drop=True)
@@ -122,6 +120,7 @@ if "selected_player" not in st.session_state:
 if "selected_option" not in st.session_state:
     st.session_state["selected_option"] = None
 
+
 # Loop over players
 for i, (col, player_name, df) in enumerate(zip(player_cols, players_names, player_dfs)):
     with col:
@@ -129,14 +128,13 @@ for i, (col, player_name, df) in enumerate(zip(player_cols, players_names, playe
         mask = picked_players_info['Name'].str.lower() == player_name.lower()
         if mask.any():
             if picked_players_info.loc[mask, 'DRAFT_YEAR'].iloc[0] == "Undrafted":
-                draft_year = "Undrafted"
-                draft_round = 'U'
-                draft_number = 'U'
+                draft_info = "Undrafted"
             else:
                 jersey_number = picked_players_info.loc[mask, 'JERSEY'].iloc[0]
                 draft_year = picked_players_info.loc[mask, 'DRAFT_YEAR'].iloc[0]
                 draft_round = picked_players_info.loc[mask, 'DRAFT_ROUND'].iloc[0]
                 draft_number = picked_players_info.loc[mask, 'DRAFT_NUMBER'].iloc[0]
+                draft_info = f'{draft_year} — R: {draft_round}, Pick {draft_number}'
 
         else:
             jersey_number = "?"
@@ -147,7 +145,7 @@ for i, (col, player_name, df) in enumerate(zip(player_cols, players_names, playe
             <div style="text-align: center;">
                 <img src="{images_picked.iloc[i]}" width="250"><br>
                 <strong>{player_name.title()}  # {jersey_number}</strong><br>
-                Draft: {draft_year} — R: {draft_round}, Pick {draft_number}
+                Draft: {draft_info}
             </div>
             """,
             unsafe_allow_html=True

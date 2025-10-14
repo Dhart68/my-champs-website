@@ -10,7 +10,7 @@ from display_news_tickers import display_news_ticker
 from get_last_scores import get_last_scores
 from select_sequences import select_sequences
 from video_player_module import generate_video_player
-
+from video_player_module import generate_video_player_with_controls
 
 st.set_page_config(page_title="MY CHAMPS", page_icon="🏀", layout="wide")
 
@@ -193,7 +193,8 @@ if st.session_state["selected_player"]:
 
     # Prepare JS and HTML player
     video_urls_js = ','.join(f'"{url}"' for url in video_urls)
-    video_player_html_i = generate_video_player(video_urls, video_urls_js)
+    #video_player_html_i = generate_video_player(video_urls, video_urls_js)
+    video_player_html_i = generate_video_player_with_controls(video_urls)
 
     st.markdown(f"### 🎥 {player.title()} – {option} sequences")
     st.components.v1.html(video_player_html_i, height=800)

@@ -334,3 +334,86 @@ function closePopup() {{
 }}
 </script>
 """
+
+# full screen does not autoplay and next/previous does not work on mobile
+def generate_video_player_with_controls(video_urls):
+    video_list_js = ','.join(f'"{url}"' for url in video_urls)
+    html_code = f"""
+    <style>
+    .video-container {{
+        position: relative;
+        width: 100%;
+        max-width: 960px;
+        margin: auto;
+        text-align: center;
+    }}
+    video {{
+        width: 100%;
+        border-radius: 12px;
+    }}
+    .control-buttons {{
+        position: absolute;
+        bottom: 60px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 20px;
+        pointer-events: none;
+    }}
+    .control-buttons button {{
+        pointer-events: all;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+        cursor: pointer;
+        transition: 0.2s;
+    }}
+    .control-buttons button:hover {{
+        background-color: rgba(255, 255, 255, 0.3);
+    }}
+    </style>
+
+    <div class="video-container">
+        <video id="mainVideo" controls autoplay playsinline>
+            <source src="{video_urls[0]}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="control-buttons">
+            <button id="prevBtn">⏮</button>
+            <button id="nextBtn">⏭</button>
+        </div>
+    </div>
+
+    <script>
+    const videoList = [{video_list_js}];
+    let currentIndex = 0;
+    const videoElement = document.getElementById("mainVideo");
+    const nextBtn = document.getElementById("nextBtn");
+    const prevBtn = document.getElementById("prevBtn");
+
+    function playVideo(index) {{
+        if (index < 0) index = videoList.length - 1;
+        if (index >= videoList.length) index = 0;
+        currentIndex = index;
+        videoElement.src = videoList[currentIndex];
+        videoElement.play().catch(err => console.log("Play error:", err));
+    }}
+
+    videoElement.addEventListener("ended", () => {{
+        playVideo(currentIndex + 1);
+    }});
+
+    nextBtn.addEventListener("click", () => {{
+        playVideo(currentIndex + 1);
+    }});
+
+    prevBtn.addEventListener("click", () => {{
+        playVideo(currentIndex - 1);
+    }});
+    </script>
+    """
+    return html_code

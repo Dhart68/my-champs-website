@@ -51,6 +51,9 @@ def get_best_players_day(number = 5, champs_list = []):
     today = datetime.today().strftime("%Y-%m-%d")
     output_file = f'backup_data/all_players_day_{today}.csv'
     df.to_csv(output_file, index=False)
+    output_file_2 = f'data/all_players_day.csv'
+    df.to_csv(output_file_2, index=False)
+
 
     df['MyScore'] = df['PTS']+df['AST']+df['TRB']
     Four_best_day = df.sort_values(by='MyScore', ascending=False).head(number)

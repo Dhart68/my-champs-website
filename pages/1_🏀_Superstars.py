@@ -41,28 +41,28 @@ my_champs_superstars = [
 my_champs_superstars_converted = [" ".join(name.split(", ")[::-1]).lower() for name in my_champs_superstars]
 
 
-st.write("This page displays stats for french players of that list {my_champs_superstars_converted}")
+st.write("This page displays stats for most famous players")
 
 # Get today local files ---
-input_file_1 = f"data/best_players_day.csv"
+input_file_1 = "data/best_players_day.csv"
 df_not_best_performers = pd.read_csv(input_file_1).iloc[5:].reset_index(drop=True)
 superstars_day = df_not_best_performers[df_not_best_performers['NAME'].isin(my_champs_superstars)]
 
 # Get today local files ---
-input_file_2 = f"data/picked_players.csv"
+input_file_2 = "data/picked_players.csv"
 picked_players = pd.read_csv(input_file_2).iloc[5:].reset_index(drop=True)
 
 picked_superstars = picked_players[picked_players['player_name'].isin(my_champs_superstars_converted)]
 
-input_file_3 = f"data/picked_players_info.csv"
+input_file_3 = "data/picked_players_info.csv"
 picked_players_info = pd.read_csv(input_file_3).iloc[5:].reset_index(drop=True)
 
 superstars_info = picked_players_info[picked_players_info['Name'].isin(my_champs_superstars_converted)]
 
-input_file_4 = f"data/picked_players_video_event_df.csv"
+input_file_4 = "data/picked_players_video_event_df.csv"
 picked_players_video_event_df = pd.read_csv(input_file_4)
 picked_players_video_event_df = picked_players_video_event_df.dropna(subset=['video']).reset_index(drop=True)
-supertars_video_event_df = picked_players_video_event_df[picked_players_video_event_df['player_name'].isin(my_champs_superstars_converted)]
+superstars_video_event_df = picked_players_video_event_df[picked_players_video_event_df['player_name'].isin(my_champs_superstars_converted)]
 
 
 # For 5 superstars players not in the best performer of the day
@@ -108,7 +108,7 @@ for player_name in players_names:
     player_id = picked_superstars.loc[picked_superstars["player_name"] == player_name.lower(), "player_id"].iloc[0]
 
     for opt in options:
-        df_opt = select_sequences(supertars_video_event_df, player_id, game_location, opt)
+        df_opt = select_sequences(superstars_video_event_df, player_id, game_location, opt)
         player_videos[opt] = df_opt
 
     video_options_dict[player_name.lower()] = player_videos

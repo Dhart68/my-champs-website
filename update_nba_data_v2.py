@@ -56,7 +56,18 @@ my_champs_french = [
 
 ]
 
-champs_list = my_champs_superstars + my_champs_french
+international_stars = [
+    "Sengun, Alperen",
+    "Hansen, Yang",
+    "Siakam, Pascal",
+    "Markkanen, Lauri",
+    "Porziņģis, Kristaps ",
+    "Schröder, Dennis",
+    "Wagner,Franz",
+    "Sabonis, Domantas"
+    ]
+
+champs_list = my_champs_superstars + my_champs_french + international_stars
 
 start_time = time.time()
 

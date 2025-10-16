@@ -8,6 +8,7 @@ from nba_api.stats.endpoints import BoxScoreMatchupsV3
 
 from video_player_module import generate_video_player
 from select_sequences import select_sequences
+from player_last_stats import player_last_stats
 
 st.title("🏀 Superstars")
 
@@ -135,6 +136,7 @@ for i, (col, player_name, df) in enumerate(zip(player_cols, players_names, playe
         if mask.any():
             if picked_players_info.loc[mask, 'DRAFT_YEAR'].iloc[0] == "Undrafted":
                 draft_info = "Undrafted"
+                jersey_number = picked_players_info.loc[mask, 'JERSEY'].iloc[0]
             else:
                 jersey_number = picked_players_info.loc[mask, 'JERSEY'].iloc[0]
                 draft_year = picked_players_info.loc[mask, 'DRAFT_YEAR'].iloc[0]
@@ -158,6 +160,10 @@ for i, (col, player_name, df) in enumerate(zip(player_cols, players_names, playe
             )
 
         st.dataframe(df, hide_index=True, height=110)
+
+        # Get Game ID and score
+        game_id = video_options_dict[player_name]["Full"]["GAME_ID"]
+
 
         # Buttons for options
         if st.button(f"Full - {len(video_options_dict[player_name]["Full"]['video'])} sequences", key=f"full_{i}", width="stretch"):
@@ -192,6 +198,7 @@ for i, (col, player_name, df) in enumerate(zip(player_cols, players_names, playe
 if st.session_state["selected_player"]:
     player = st.session_state["selected_player"]
     option = st.session_state["selected_option"]
+    [last_n_games, player_id] = player_last_stats(player, 5)
 
     # Get URLs directly from your dictionary
     video_urls = video_options_dict[player][option]['video'].to_list()
@@ -200,5 +207,11 @@ if st.session_state["selected_player"]:
     video_urls_js = ','.join(f'"{url}"' for url in video_urls)
     video_player_html_i = generate_video_player(video_urls, video_urls_js)
 
+    # Add anchor for scrolling
+    st.markdown('<a name="video_section"></a>', unsafe_allow_html=True)
     st.markdown(f"### 🎥 {player.title()} – {option} sequences")
     st.components.v1.html(video_player_html_i, height=800)
+
+    # Display player last stats
+    st.markdown(f"### Last 5 games statistics : {player.title()}")
+    st.dataframe(last_n_games, hide_index=True, height=210)

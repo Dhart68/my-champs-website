@@ -67,7 +67,15 @@ international_stars = [
     "Sabonis, Domantas"
     ]
 
-champs_list = my_champs_superstars + my_champs_french + international_stars
+rookies_2025 = [
+    "Flagg, Cooper",
+    "Harper, Dylan",
+    "Edgecombe, V. J.",
+    "Knueppel, Kon",
+    "Bailey, Ace"
+    ]
+
+champs_list = my_champs_superstars + my_champs_french + international_stars + rookies_2025
 
 start_time = time.time()
 

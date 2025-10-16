@@ -10,7 +10,7 @@ from display_news_tickers import display_news_ticker
 from get_last_scores import get_last_scores
 from select_sequences import select_sequences
 from video_player_module import generate_video_player
-
+from player_last_stats import player_last_stats
 
 st.set_page_config(page_title="MY CHAMPS", page_icon="🏀", layout="wide")
 
@@ -150,6 +150,10 @@ for i, (col, player_name, df) in enumerate(zip(player_cols, players_names, playe
 
         st.dataframe(df, hide_index=True, height=110)
 
+        # Get Game ID and score
+        game_id = video_options_dict[player_name]["Full"]["GAME_ID"]
+
+
         # Buttons for options
         if st.button(f"Full - {len(video_options_dict[player_name]["Full"]['video'])} sequences", key=f"full_{i}", width="stretch"):
             st.session_state["selected_player"] = player_name
@@ -183,6 +187,7 @@ for i, (col, player_name, df) in enumerate(zip(player_cols, players_names, playe
 if st.session_state["selected_player"]:
     player = st.session_state["selected_player"]
     option = st.session_state["selected_option"]
+    [last_n_games, player_id] = player_last_stats(player, 5)
 
     # Get URLs directly from your dictionary
     video_urls = video_options_dict[player][option]['video'].to_list()
@@ -195,3 +200,7 @@ if st.session_state["selected_player"]:
     st.markdown('<a name="video_section"></a>', unsafe_allow_html=True)
     st.markdown(f"### 🎥 {player.title()} – {option} sequences")
     st.components.v1.html(video_player_html_i, height=800)
+
+    # Display player last stats
+    st.markdown(f"### Last 5 games statistics : {player.title()}")
+    st.dataframe(last_n_games, hide_index=True, height=210)

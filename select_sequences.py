@@ -61,4 +61,7 @@ def select_sequences(pbp, player_id, game_location, option):
                 pbp_player['HOMEDESCRIPTION'].str.contains('|'.join(selected_terms), na=False)
             ]
 
+    pbp_player = pbp_player.drop_duplicates(subset=['EVENTNUM']).sort_values(by=['EVENTNUM'])
+    print(pbp_player)
+
     return pbp_player

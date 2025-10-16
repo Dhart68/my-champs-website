@@ -125,6 +125,7 @@ for i, (col, player_name, df) in enumerate(zip(player_cols, players_names, playe
         if mask.any():
             if picked_players_info.loc[mask, 'DRAFT_YEAR'].iloc[0] == "Undrafted":
                 draft_info = "Undrafted"
+                jersey_number = picked_players_info.loc[mask, 'JERSEY'].iloc[0]
             else:
                 jersey_number = picked_players_info.loc[mask, 'JERSEY'].iloc[0]
                 draft_year = picked_players_info.loc[mask, 'DRAFT_YEAR'].iloc[0]

@@ -16,7 +16,7 @@ venv/
 ENV/
 
 # --- Streamlit cache ---
-.streamlit/
+#.streamlit/
 .streamlit/secrets.toml
 
 # --- Data files ---

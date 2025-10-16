@@ -1,15 +1,11 @@
 DATE,TM,OPP,NAME,(POS),G,MIN,FG,FGA,FG3,F3A,FT,FTA,OFF,DEF,TRB,AST,PF,DQ,STL,TO,BLK,PTS,MyScore,Formatted_name
-10/14/2025,PHO,LAL,"Butler, Jared",(G  ),1,34,14,26,5,10,2,6,0,7,7,9,3,0,1,0,0,35,51,jared butler
-10/14/2025,CHI,DEN,"Giddey, Josh",(G  ),1,29,7,14,3,7,8,8,2,7,9,6,4,0,0,4,1,25,40,josh giddey
-10/14/2025,GS,POR,"Curry, Stephen",(G  ),1,27,6,15,4,11,12,13,0,6,6,5,2,0,0,5,0,28,39,stephen curry
-10/14/2025,LAL,PHO,"Doncic, Luka",(G  ),1,22,7,15,4,8,7,9,3,4,7,4,3,0,0,5,0,25,36,luka doncic
-10/14/2025,DEN,CHI,"Jokic, Nikola",(C  ),1,24,7,10,0,0,4,4,2,6,8,8,4,0,1,0,0,18,34,nikola jokic
-10/14/2025,CHI,DEN,"Essengue, Noa",(SUB),1,17,1,4,0,2,0,0,1,0,1,1,4,0,0,0,0,2,4,noa essengue
-10/14/2025,CLE,DET,"Mitchell, Donovan",(G  ),1,29,6,11,3,6,2,3,0,2,2,3,6,1,3,5,0,17,22,donovan mitchell
-10/14/2025,HOU,NO,"Sengun, Alperen",(F  ),1,27,3,8,0,1,2,2,3,9,12,7,1,0,2,6,1,8,27,alperen sengun
-10/14/2025,HOU,NO,"Durant, Kevin",(G  ),1,28,6,13,0,3,3,4,0,4,4,2,1,0,0,1,1,15,21,kevin durant
-10/14/2025,MIL,OKC,"Antetokounmpo, Giannis",(F  ),1,25,5,8,0,0,6,10,1,6,7,4,3,0,2,2,1,16,27,giannis antetokounmpo
-10/14/2025,OKC,MIL,"Gilgeous-Alexander, Shai",(G  ),1,19,8,10,1,3,6,8,0,2,2,6,2,0,3,2,1,23,31,shai gilgeous-alexander
-10/14/2025,OKC,MIL,"Dieng, Ousmane",(SUB),1,21,2,7,2,5,2,2,0,2,2,1,1,0,1,2,1,8,11,ousmane dieng
-10/14/2025,POR,GS,"Cissoko, Sidy",(SUB),1,22,1,5,0,4,3,4,1,1,2,0,2,0,1,2,0,5,7,sidy cissoko
-10/14/2025,POR,GS,"Rupert, Rayan",(SUB),1,6,0,1,0,1,0,0,0,1,1,0,0,0,1,0,0,0,1,rayan rupert
+10/15/2025,BOS,TOR,"White, Derrick",(G  ),1,35,10,23,6,17,7,9,2,7,9,6,1,0,0,1,4,33.0,48.0,derrick white
+10/15/2025,CHA,MEM,"Bridges, Miles",(F  ),1,30,11,16,5,7,2,2,1,9,10,5,1,0,0,0,0,29.0,44.0,miles bridges
+10/15/2025,CHA,MEM,"Ball, LaMelo",(G  ),1,28,7,16,4,12,5,5,0,5,5,8,1,0,1,5,0,23.0,36.0,lamelo ball
+10/15/2025,SAC,LAC,"Sabonis, Domantas",(C  ),1,24,7,14,0,5,1,2,2,12,14,5,1,0,1,4,0,15.0,34.0,domantas sabonis
+10/15/2025,CHA,MEM,"Diabate, Moussa",(SUB),1,25,6,7,0,0,6,8,9,4,13,0,0,0,0,1,1,18.0,31.0,moussa diabate
+10/15/2025,DAL,LAL,"Davis, Anthony",(F  ),1,32,7,15,0,3,4,7,1,8,9,2,2,0,0,3,1,18.0,29.0,anthony davis
+10/15/2025,LAC,SAC,"Leonard, Kawhi",(F  ),1,27,5,13,0,4,5,5,0,2,2,2,0,0,0,1,1,15.0,19.0,kawhi leonard
+10/15/2025,LAC,SAC,"Harden, James",(G  ),1,23,4,10,0,6,0,2,0,3,3,3,3,0,1,3,0,8.0,14.0,james harden
+10/15/2025,LAC,SAC,"Batum, Nicolas",(SUB),1,16,1,3,1,2,0,0,0,3,3,1,0,0,0,0,0,3.0,7.0,nicolas batum
+10/15/2025,SAC,LAC,"Raynaud, Maxime",(SUB),1,16,2,4,1,1,0,0,1,3,4,0,3,0,0,0,0,5.0,9.0,maxime raynaud

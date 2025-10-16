@@ -190,5 +190,7 @@ if st.session_state["selected_player"]:
     video_urls_js = ','.join(f'"{url}"' for url in video_urls)
     video_player_html_i = generate_video_player(video_urls, video_urls_js)
 
+    # Add anchor for scrolling
+    st.markdown('<a name="video_section"></a>', unsafe_allow_html=True)
     st.markdown(f"### 🎥 {player.title()} – {option} sequences")
     st.components.v1.html(video_player_html_i, height=800)

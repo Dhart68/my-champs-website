@@ -10,7 +10,7 @@ st.title("🏀 international stars 2025")
 ### French players
 international_stars = [
     "Sengun, Alperen",
-    "Hansen, Yang",
+    "Yang, Hansen",
     "Siakam, Pascal",
     "Markkanen, Lauri",
     "Porziņģis, Kristaps ",

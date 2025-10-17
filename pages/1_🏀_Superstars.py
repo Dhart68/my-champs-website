@@ -44,34 +44,31 @@ my_champs_superstars_converted = [" ".join(name.split(", ")[::-1]).lower() for n
 
 st.write("This page displays stats for most famous players")
 
-# Get today local files ---
+#  Get today local files Superstars players ---
+
 input_file_1 = "data/best_players_day.csv"
 df_not_best_performers = pd.read_csv(input_file_1).iloc[5:].reset_index(drop=True)
-superstars_day = df_not_best_performers[df_not_best_performers['NAME'].isin(my_champs_superstars)]
+superstars_day = df_not_best_performers[df_not_best_performers['NAME'].isin(my_champs_superstars)] # here change for selected list
 
-# Get today local files ---
-input_file_2 = "data/picked_players.csv"
+
+input_file_2 = f"data/picked_players.csv"
 picked_players = pd.read_csv(input_file_2).iloc[5:].reset_index(drop=True)
+picked_players = picked_players[picked_players['player_name'].isin(my_champs_superstars_converted)] # here change for selected list
 
-picked_superstars = picked_players[picked_players['player_name'].isin(my_champs_superstars_converted)]
-
-input_file_3 = "data/picked_players_info.csv"
+input_file_3 = f"data/picked_players_info.csv"
 picked_players_info = pd.read_csv(input_file_3).iloc[5:].reset_index(drop=True)
+picked_players_info = picked_players_info[picked_players_info['Name'].isin(my_champs_superstars_converted)] # here change for selected list
 
-superstars_info = picked_players_info[picked_players_info['Name'].isin(my_champs_superstars_converted)]
-
-input_file_4 = "data/picked_players_video_event_df.csv"
+input_file_4 = f"data/picked_players_video_event_df.csv"
 picked_players_video_event_df = pd.read_csv(input_file_4)
 picked_players_video_event_df = picked_players_video_event_df.dropna(subset=['video']).reset_index(drop=True)
-superstars_video_event_df = picked_players_video_event_df[picked_players_video_event_df['player_name'].isin(my_champs_superstars_converted)]
+picked_players_video_event_df = picked_players_video_event_df[picked_players_video_event_df['player_name'].isin(my_champs_superstars_converted)] # here change for selected list
 
-
-# For 5 superstars players not in the best performer of the day
+# For 5 best players
 # each column = image + nom + stats
-
-playerS_name=superstars_day['Formatted_name'].to_list()
-images_picked = picked_superstars['img']
-players_names = picked_superstars['player_name']
+playerS_name= superstars_day['Formatted_name'].to_list() # here change for selected list
+images_picked = picked_players['img']
+players_names = picked_players['player_name']
 
 # ---  Create the five columns ---
 player_cols = st.columns(5)
@@ -81,13 +78,9 @@ player_dfs = []
 
 for player_name in players_names:
     # Filter data
-    df_season = superstars_info[
-        superstars_info['Name'] == player_name.lower()
-    ][['PTS', 'REB', 'AST']]
+    df_season = picked_players_info[picked_players_info['Name'] == player_name.lower()][['PTS', 'REB', 'AST']]
 
-    df_today = superstars_day[
-        superstars_day['Formatted_name'] == player_name.lower()
-    ][['PTS', 'TRB', 'AST']].rename(columns={'TRB': 'REB'})
+    df_today = superstars_day[superstars_day['Formatted_name'] == player_name.lower()][['PTS', 'TRB', 'AST']].rename(columns={'TRB': 'REB'}) # here change for selected list
 
     # Combine
     df_player = pd.concat([df_season, df_today], ignore_index=True)
@@ -105,11 +98,11 @@ video_options_dict = {}
 
 for player_name in players_names:
     player_videos = {}
-    game_location = picked_superstars.loc[picked_superstars["player_name"] == player_name.lower(), "location"].iloc[0]
-    player_id = picked_superstars.loc[picked_superstars["player_name"] == player_name.lower(), "player_id"].iloc[0]
+    game_location = picked_players.loc[picked_players["player_name"] == player_name.lower(), "location"].iloc[0]
+    player_id = picked_players.loc[picked_players["player_name"] == player_name.lower(), "player_id"].iloc[0]
 
     for opt in options:
-        df_opt = select_sequences(superstars_video_event_df, player_id, game_location, opt)
+        df_opt = select_sequences(picked_players_video_event_df, player_id, game_location, opt)
         player_videos[opt] = df_opt
 
     video_options_dict[player_name.lower()] = player_videos
@@ -126,7 +119,6 @@ if "selected_player" not in st.session_state:
     st.session_state["selected_player"] = None
 if "selected_option" not in st.session_state:
     st.session_state["selected_option"] = None
-
 
 # Loop over players
 for i, (col, player_name, df) in enumerate(zip(player_cols, players_names, player_dfs)):
@@ -146,6 +138,7 @@ for i, (col, player_name, df) in enumerate(zip(player_cols, players_names, playe
 
         else:
             jersey_number = "?"
+            draft_info = "?"
 
         # Use HTML code to center the image
         st.markdown(

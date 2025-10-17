@@ -50,7 +50,7 @@ if today == Five_best_day['DATE'][0]:
 else:
     print(f"Old data : {Five_best_day['DATE'][0]} - Please update")
 
-# Get today local files with date in name ---
+# Get today local files ---
 input_file_2 = f"data/picked_players.csv"
 picked_players = pd.read_csv(input_file_2)[0:6].reset_index(drop=True)
 

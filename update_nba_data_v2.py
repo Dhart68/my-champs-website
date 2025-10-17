@@ -58,13 +58,14 @@ my_champs_french = [
 
 international_stars = [
     "Sengun, Alperen",
-    "Yang, Hansen",
     "Siakam, Pascal",
     "Markkanen, Lauri",
     "Porziņģis, Kristaps ",
     "Schröder, Dennis",
     "Wagner,Franz",
-    "Sabonis, Domantas"
+    "Sabonis, Domantas",
+    "Hansen, Yang", # Should works like that I tested with opposite does not work with get_players_info()
+    "Yang, Hansen" # but this one is found in the players of the day
     ]
 
 rookies_2025 = [
@@ -81,7 +82,12 @@ start_time = time.time()
 
 best_players_day = get_best_players_day(number = 5, champs_list=champs_list)
 
+
 playerS_name=best_players_day['Formatted_name'].to_list()
+
+# special for Hansen Yang
+if 'hansen yang' in playerS_name:
+    playerS_name = playerS_name + ['yang hansen']
 
 print(playerS_name)
 print(time.ctime())

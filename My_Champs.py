@@ -136,11 +136,17 @@ for i, (col, player_name, df) in enumerate(zip(player_cols, players_names, playe
         else:
             jersey_number = "?"
 
+        if images_picked.iloc[i] == False: # does not work
+            image_player = "data\Picture1.png"
+            print(image_player)
+        else:
+            image_player = images_picked.iloc[i]
+
         # Use HTML code to center the image
         st.markdown(
             f"""
             <div style="text-align: center;">
-                <img src="{images_picked.iloc[i]}" width="250"><br>
+                <img src="{image_player}" width="250"><br>
                 <strong>{player_name.title()}  # {jersey_number}</strong><br>
                 Draft: {draft_info}
             </div>

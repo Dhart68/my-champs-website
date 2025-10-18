@@ -25,6 +25,7 @@ def get_mp4_urls_v2(player_id, game_id):
 
     # event num list with video flag
     event_id_list = pbp_player[pbp_player['VIDEO_AVAILABLE_FLAG']==1]['EVENTNUM'].tolist()
+    event_id_list = list(set(event_id_list))
 
     # for loop to get all the video url
     headers = {

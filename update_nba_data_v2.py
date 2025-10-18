@@ -94,6 +94,7 @@ print(time.ctime())
 
 [picked_players, picked_players_info, picked_players_video_event_df] = get_players_info_v2(playerS_name)
 
+print(picked_players)
 end_time = time.time() # or time.perf_counter()
 elapsed_time = end_time - start_time
 print(f"Execution took: {elapsed_time:.6f} seconds")

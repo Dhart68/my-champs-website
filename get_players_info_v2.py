@@ -16,6 +16,7 @@ def get_players_info_v2(list_of_players_name):
     picked_players = pd.DataFrame(columns=['player_name','player_id', 'img', 'game_id', 'location'])
     picked_players_info = []  # collect infos as list, concat once
     picked_players_video_event_df = []
+    list_players_missing_data = []
 
     for index, player_name in playerS_name.iterrows():
         pname = player_name['player_name']
@@ -59,7 +60,7 @@ def get_players_info_v2(list_of_players_name):
 
         except Exception as e:
             print(f"⚠️ Could not fetch info for {pname}: {e}")
-
+            list_players_missing_data.append(pname)
             continue
 
         # --- get image ---
@@ -70,7 +71,7 @@ def get_players_info_v2(list_of_players_name):
 
         # --- get last game info ---
         try:
-            game_log = playergamelog.PlayerGameLog(player_id=player_id, season_type_all_star='Pre Season') # to adjust
+            game_log = playergamelog.PlayerGameLog(player_id=player_id, season_type_all_star='Regular Season') # to adjust [Regular Season, "Playoffs," or "All-Star". "Pre Season"]
             games_data = game_log.get_data_frames()[0]
             print(f"inside the last game info > {pname}")
 
@@ -94,11 +95,17 @@ def get_players_info_v2(list_of_players_name):
                 picked_players.loc[index, 'game_id'] = None
                 picked_players.loc[index, 'location'] = None
                 print(f"⚠️  game empty > {pname}")
+                list_players_missing_data.append(pname)
 
         except Exception as e:
             print(f"⚠️ Could not fetch games for {pname}: {e}")
             picked_players.loc[index, 'game_id'] = None
             picked_players.loc[index, 'location'] = None
+            list_players_missing_data.append(pname)
+
+    if list_players_missing_data:
+        list_players_missing_data=list(set(list_players_missing_data))
+        print(list_players_missing_data)
 
     # --- concat all infos safely ---
     if picked_players_info:
@@ -115,4 +122,4 @@ def get_players_info_v2(list_of_players_name):
                                                     'option', 'player_name'])
 
 
-    return [picked_players, picked_players_info, picked_players_video_event_df]
+    return [picked_players, picked_players_info, picked_players_video_event_df, list_players_missing_data]

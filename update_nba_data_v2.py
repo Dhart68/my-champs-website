@@ -92,12 +92,13 @@ if 'hansen yang' in playerS_name:
 print(playerS_name)
 print(time.ctime())
 
-[picked_players, picked_players_info, picked_players_video_event_df] = get_players_info_v2(playerS_name)
+[picked_players, picked_players_info, picked_players_video_event_df, list_players_missing_data] = get_players_info_v2(playerS_name)
 
 print(picked_players)
 end_time = time.time() # or time.perf_counter()
 elapsed_time = end_time - start_time
 print(f"Execution took: {elapsed_time:.6f} seconds")
+print(f'missing data: {list_players_missing_data}')
 
 # Get today's date in a clean format (e.g. 2025-10-09)
 today = datetime.today().strftime("%Y-%m-%d")

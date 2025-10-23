@@ -33,7 +33,7 @@ my_champs_french = [
     "Raynaud, Maxime",
     "Traoré, Nolan",
     "Penda, Noah",
-    "Salaun, Tidjane"
+    'Salaun, Tidjane',
 
 ]
 

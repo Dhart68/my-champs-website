@@ -1,6 +1,10 @@
 ### Function to get the last stats of the day by scraping the page
 # 'https://cdn.nba.com/static/json/staticData/EliasGameStats/00/all_players_day.txt'
 
+# Make a new version to get info faster
+# https://www.nba.com/stats/players/traditional?sort=PTS&dir=-1&LastNGames=1
+# ==> leaguedashplayerstats.LeagueDashPlayerStats()
+# Function get_player_day
 
 import requests
 import pandas as pd

@@ -52,7 +52,8 @@ my_champs_french = [
     "Dadiet, Pacome",
     "Raynaud, Maxime",
     "Traoré, Nolan",
-    "Penda, Noah"
+    "Penda, Noah",
+    'Salaun, Tidjane',
 
 ]
 

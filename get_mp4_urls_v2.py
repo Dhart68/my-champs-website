@@ -19,6 +19,7 @@ def get_mp4_urls_v2(player_id, game_id):
     pbp = playbyplayv2.PlayByPlayV2(game_id)
     pbp = pbp.get_data_frames()[0]
 
+
     # select rows in pbp_player containing Name of the player
     # I choose to select only the 2 players involved to limit the number of actions
     pbp_player = pbp[(pbp['PLAYER1_ID'] == int(player_id)) | (pbp['PLAYER2_ID'] == int(player_id)) ].copy()

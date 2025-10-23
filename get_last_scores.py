@@ -1,6 +1,8 @@
 ### Function to get the last scores of the day by scraping the page
 # https://cdn.nba.com/static/json/staticData/EliasGameStats/00/day_scores.txt'
 
+# to update with
+ # https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json
 
 import requests
 import pandas as pd
@@ -8,6 +10,7 @@ import pandas as pd
 def get_last_scores():
     # Fetch the content
     url = 'https://cdn.nba.com/static/json/staticData/EliasGameStats/00/day_scores.txt'
+
     response = requests.get(url)
 
     # Preprocess the data: split into lines and skip unnecessary header lines

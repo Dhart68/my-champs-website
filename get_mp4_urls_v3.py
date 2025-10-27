@@ -1,62 +1,37 @@
-# Fetch all the video event for one game, the selection regarding FGM, blocks etc will be done afterward
-
-# pbp is not available just after the game, i have to find another way
+# Function to get the URL of the video of the player picked
+# Fetch all the video event, the selection regarding FGM, blocks etc will be done afterward
 
 
 import requests
 import pandas as pd
-from datetime import datetime
 
 from nba_api.stats.endpoints import playbyplayv2
-from nba_api.stats.endpoints import ScheduleLeagueV2
-
-def daily_schedule():
-
-    ## trouver le temps du moment la veille des match
-    today = datetime.today().strftime("%Y-%m-%d")
-
-    ## chercher dans le schedule les match prevu et trouver les heures des matchs
-    schedule = ScheduleLeagueV2()
-    schedule_nba = schedule.get_data_frames()[0]
-
-    schedule_day = schedule_nba[schedule_nba['gameDateEst'].str[:10] == today]
-
-    select_columns = ['gameDate', 'gameId','gameStatus','gameStatusText',
-                  'gameDateTimeUTC','homeTeam_teamName','homeTeam_score',
-                  'awayTeam_teamName','awayTeam_score']
-
-    df = schedule_day[select_columns]
-    # Add 3h to estimate end of the game
-    df.insert(5, 'estimate_end_time_UTC', pd.to_datetime(df['gameDateTimeUTC'], utc=True) + pd.Timedelta(hours=3))
-
-    daily_schedule = df
-
-    # store info in data folder
-    output_file = f'data/daily_schedule_{today}.csv'
-    daily_schedule.to_csv(output_file, index=False)
 
 
-    return daily_schedule
-
-
-
-def get_mp4_urls_v3(game_id):
+def get_mp4_urls_v3(player_id, game_id):
     '''
     Function to get the URL of the video of the player picked, need the game_id and the player_id
     get the list of URLs of the video part of interest, could be improve with the EVENTMSGACTIONTYPE
     to select only some type of actions
     '''
 
-    # get all the pbp of the game
-    pbp = playbyplayv2.PlayByPlayV2(game_id)
-    pbp = pbp.get_data_frames()[0]
+    # get all the pbp of the game ## old version v2
+    #pbp = playbyplayv2.PlayByPlayV2(game_id)
+    #pbp = pbp.get_data_frames()[0]
 
-    print(pbp.head())
+    # get data from local loaded df
+    pbp_season_2025 = pd.read_csv("backup_data\pbp_season_2025.csv", dtype={'GAME_ID': str}))
+    pbp = pbp_season_2025[pbp_season_2025["GAME_ID"]==game_id]
+
+
+    # select rows in pbp_player containing Name of the player
+    # I choose to select only the 2 players involved to limit the number of actions
+    pbp_player = pbp[(pbp['PLAYER1_ID'] == int(player_id)) | (pbp['PLAYER2_ID'] == int(player_id)) ].copy()
+
 
     # event num list with video flag
-    event_id_list = pbp[pbp['VIDEO_AVAILABLE_FLAG']==1]['EVENTNUM'].tolist()
+    event_id_list = pbp_player[pbp_player['VIDEO_AVAILABLE_FLAG']==1]['EVENTNUM'].tolist()
     event_id_list = list(set(event_id_list))
-    print(event_id_list[:5])
 
     # for loop to get all the video url
     headers = {
@@ -74,13 +49,10 @@ def get_mp4_urls_v3(game_id):
     }
 
     # Initialize the columns in pbp_player
-    pbp['video'] = None
-    pbp['desc'] = None
-
-    print(game_id)
+    pbp_player['video'] = None
+    pbp_player['desc'] = None
 
     for event_id in event_id_list:
-        print(event_id)
         url = f'https://stats.nba.com/stats/videoeventsasset?GameEventID={event_id}&GameID={game_id}'
         r = requests.get(url, headers=headers)
         json_data = r.json()
@@ -93,23 +65,10 @@ def get_mp4_urls_v3(game_id):
             desc = playlist[0].get('dsc')
 
             # Assign to pbp_player using .loc
-            mask = pbp['EVENTNUM'] == event_id
-            pbp.loc[mask, 'video'] = video_url
-            pbp.loc[mask, 'desc'] = desc
+            mask = pbp_player['EVENTNUM'] == event_id
+            pbp_player.loc[mask, 'video'] = video_url
+            pbp_player.loc[mask, 'desc'] = desc
 
-    video_event_df = pbp.copy()
+    video_event_df = pbp_player.copy()
 
-    return video_event_df
-
-
-#### Test
-
-#game_id_1 = str(daily_schedule()['gameId'].iloc[0])
-game_id_1 ='0022500001'
-print(game_id_1)
-pbp_video = get_mp4_urls_v3(game_id_1)
-
-print(pbp_video.head())
-
-output_file = f"data/game_id_1.csv"
-pbp_video.to_csv(output_file, index=False)
+    return [video_event_df]

@@ -5,6 +5,7 @@ import time
 
 from get_best_players_day import get_best_players_day
 from get_players_info_v2 import get_players_info_v2
+#from get_players_info_v3_game_df.py import get_players_info_v3
 
 ### Add superstars
 my_champs_superstars = [
@@ -94,6 +95,10 @@ print(playerS_name)
 print(time.ctime())
 
 [picked_players, picked_players_info, picked_players_video_event_df, list_players_missing_data] = get_players_info_v2(playerS_name)
+
+# version with full game event dataframe
+#[picked_players, picked_players_info, picked_players_video_event_df, list_players_missing_data] = get_players_info_v3(playerS_name)
+
 
 print(picked_players)
 end_time = time.time() # or time.perf_counter()

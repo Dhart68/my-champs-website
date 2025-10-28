@@ -22,6 +22,7 @@ def get_players_info_v2(list_of_players_name):
         pname = player_name['player_name']
         print(pname)
         print(time.ctime())
+        df_player = pd.DataFrame()
 
         # --- find player id ---
         found = players.find_players_by_full_name(pname)
@@ -88,6 +89,13 @@ def get_players_info_v2(list_of_players_name):
                 # DataFrame of the last video with get_mp4_urls()
                 [video_event_df] = get_mp4_urls_v2(player_id, last_game_id)
                 video_event_df['player_name'] = pname
+
+                #save player_df
+                df_player = video_event_df
+                output_file = f"backup_data/{last_game_id}_{pname}.csv"
+                df_player.to_csv(output_file, index=False)
+
+                #append df players
                 picked_players_video_event_df.append(video_event_df)
                 print(picked_players_video_event_df)
 

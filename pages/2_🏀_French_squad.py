@@ -15,12 +15,11 @@ st.title("🏀 Frenchies")
 my_champs_french = [
     "Wembanyama, Victor",
     "Gobert, Rudy",
+    "Diabate, Moussa"
     "Batum, Nicolas",
     "Yabusele, Guerschon",
     "Coulibaly, Bilal",
     "Dieng, Ousmane",
-    "Luwawu-Cabarrot, Timothé",
-    "Sarr, Olivier",
     "Risacher, Zaccharie",
     "Sarr, Alex",
     "Sarr, Olivier",

@@ -24,6 +24,7 @@ def get_mp4_urls_v2(player_id, game_id):
     # I choose to select only the 2 players involved to limit the number of actions
     pbp_player = pbp[(pbp['PLAYER1_ID'] == int(player_id)) | (pbp['PLAYER2_ID'] == int(player_id)) ].copy()
 
+
     # event num list with video flag
     event_id_list = pbp_player[pbp_player['VIDEO_AVAILABLE_FLAG']==1]['EVENTNUM'].tolist()
     event_id_list = list(set(event_id_list))
@@ -63,6 +64,7 @@ def get_mp4_urls_v2(player_id, game_id):
             mask = pbp_player['EVENTNUM'] == event_id
             pbp_player.loc[mask, 'video'] = video_url
             pbp_player.loc[mask, 'desc'] = desc
+            print(event_id)
 
     video_event_df = pbp_player.copy()
 

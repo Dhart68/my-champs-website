@@ -36,12 +36,11 @@ my_champs_superstars = [
 my_champs_french = [
     "Wembanyama, Victor",
     "Gobert, Rudy",
+    "Diabate, Moussa"
     "Batum, Nicolas",
     "Yabusele, Guerschon",
     "Coulibaly, Bilal",
     "Dieng, Ousmane",
-    "Luwawu-Cabarrot, Timothé",
-    "Sarr, Olivier",
     "Risacher, Zaccharie",
     "Sarr, Alex",
     "Sarr, Olivier",
@@ -88,11 +87,14 @@ best_players_day = get_best_players_day(number = 5, champs_list=champs_list)
 playerS_name=best_players_day['Formatted_name'].to_list()
 
 # special for Hansen Yang
-if 'hansen yang' in playerS_name:
-    playerS_name = playerS_name + ['yang hansen']
+#if 'hansen yang' in playerS_name:
+#    playerS_name = playerS_name + ['yang hansen']
 
 print(playerS_name)
 print(time.ctime())
+
+#list of players name recuo
+#playerS_name =[]
 
 [picked_players, picked_players_info, picked_players_video_event_df, list_players_missing_data] = get_players_info_v2(playerS_name)
 

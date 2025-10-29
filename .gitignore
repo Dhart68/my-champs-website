@@ -22,6 +22,9 @@ ENV/
 # --- Data files ---
 backup_data/
 
+# --- Back end functions folder ---
+back_end_functions/
+
 # --- Jupyter notebooks checkpoints ---
 .ipynb_checkpoints/
 

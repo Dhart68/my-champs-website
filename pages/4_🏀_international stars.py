@@ -15,7 +15,7 @@ international_stars = [
     "Siakam, Pascal",
     "Markkanen, Lauri",
     "Porziņģis, Kristaps ",
-    "Schröder, Dennis",
+    "Schroder, Dennis",
     "Wagner,Franz",
     "Sabonis, Domantas"
     ]
@@ -78,11 +78,12 @@ video_options_dict = {}
 
 for player_name in players_names:
     player_videos = {}
+    game_id = picked_players.loc[picked_players["player_name"] == player_name.lower(), "game_id"].iloc[0]
     game_location = picked_players.loc[picked_players["player_name"] == player_name.lower(), "location"].iloc[0]
     player_id = picked_players.loc[picked_players["player_name"] == player_name.lower(), "player_id"].iloc[0]
 
     for opt in options:
-        df_opt = select_sequences(picked_players_video_event_df, player_id, game_location, opt)
+        df_opt = select_sequences(picked_players_video_event_df, game_id, player_id, game_location, opt)
         player_videos[opt] = df_opt
 
     video_options_dict[player_name.lower()] = player_videos

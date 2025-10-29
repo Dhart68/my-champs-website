@@ -1,9 +1,14 @@
 # select video_event_pd where desc does not contain remove terms
 
-def select_sequences(pbp, player_id, game_location, option):
+def select_sequences(pbp, game_id, player_id, game_location, option):
     """
     Select sequences for one player from a play-by-play dataframe.
+
     """
+    # Select the game
+    pbp = pbp[pbp['GAME_ID']==game_id]
+
+    # Create the sub dataframes regarding options
     if option == 'Full':
         pbp_player = pbp[
             (pbp['PLAYER1_ID'] == int(player_id)) |

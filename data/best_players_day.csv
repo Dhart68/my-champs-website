@@ -1,21 +1,16 @@
 DATE,TM,OPP,NAME,(POS),G,MIN,FG,FGA,FG3,F3A,FT,FTA,OFF,DEF,TRB,AST,PF,DQ,STL,TO,BLK,PTS,MyScore,Formatted_name
-10/29/2025,DET,ORL,"Cunningham, Cade",(G  ),1,36,12,24,1,7,5,5,1,5,6,10,2,0,3,0,3,30,46,cade cunningham
-10/29/2025,LAL,MIN,"Reaves, Austin",(G  ),1,40,9,24,3,11,7,7,0,1,1,16,1,0,2,3,0,28,45,austin reaves
-10/29/2025,MIN,LAL,"Randle, Julius",(F  ),1,36,10,20,4,7,9,10,0,5,5,6,2,0,1,3,0,33,44,julius randle
-10/29/2025,MEM,PHO,"Morant, Ja",(G  ),1,32,10,19,3,8,5,5,1,7,8,7,1,0,2,6,0,28,43,ja morant
-10/29/2025,IND,DAL,"Siakam, Pascal",(F  ),1,37,9,23,2,5,7,12,3,10,13,3,4,0,2,3,0,27,43,pascal siakam
-10/29/2025,DEN,NO,"Jokic, Nikola",(C  ),1,28,10,15,1,2,0,0,2,10,12,10,4,0,2,2,0,21,43,nikola jokic
-10/29/2025,UTA,POR,"Markkanen, Lauri",(F  ),1,38,10,19,2,7,10,12,1,4,5,2,2,0,3,1,3,32,39,lauri markkanen
-10/29/2025,PHO,MEM,"Booker, Devin",(G  ),1,36,10,26,4,11,8,9,4,0,4,3,2,0,1,3,1,32,39,devin booker
-10/29/2025,HOU,TOR,"Durant, Kevin",(F  ),1,37,11,19,4,8,5,8,0,5,5,1,2,0,0,2,3,31,37,kevin durant
-10/29/2025,HOU,TOR,"Sengun, Alperen",(C  ),1,35,6,8,1,2,5,8,1,7,8,9,1,0,2,2,2,18,35,alperen sengun
-10/29/2025,SAC,CHI,"Sabonis, Domantas",(C  ),1,32,8,14,1,4,1,2,1,10,11,6,4,0,1,2,0,18,35,domantas sabonis
-10/29/2025,DAL,IND,"Flagg, Cooper",(G  ),1,35,6,11,0,0,3,3,1,9,10,4,2,0,0,2,1,15,29,cooper flagg
-10/29/2025,CLE,BOS,"Mitchell, Donovan",(G  ),1,32,5,12,5,9,0,2,0,4,4,6,4,0,0,3,1,15,25,donovan mitchell
-10/29/2025,MIN,LAL,"Gobert, Rudy",(C  ),1,38,4,5,0,0,1,2,2,4,6,2,3,0,0,3,2,9,17,rudy gobert
-10/29/2025,UTA,POR,"Bailey, Ace",(SUB),1,15,3,5,0,2,2,2,1,2,3,2,2,0,0,1,1,8,13,ace bailey
-10/29/2025,ATL,BRK,"Risacher, Zaccharie",(F  ),1,28,2,7,1,2,3,4,0,3,3,0,2,0,1,0,1,8,11,zaccharie risacher
-10/29/2025,DAL,IND,"Davis, Anthony",(C  ),1,7,2,4,0,0,0,0,1,3,4,0,0,0,1,2,0,4,8,anthony davis
-10/29/2025,POR,UTA,"Rupert, Rayan",(SUB),1,14,1,2,1,2,0,0,0,3,3,1,2,0,2,0,0,3,7,rayan rupert
-10/29/2025,ORL,DET,"Penda, Noah",(SUB),1,12,2,3,0,0,0,0,2,0,2,0,2,0,0,1,0,4,6,noah penda
-10/29/2025,POR,UTA,"Yang, Hansen",(SUB),1,4,1,1,0,0,0,0,0,0,0,0,2,0,0,1,0,2,2,hansen yang
+10/30/2025,SA,MIA,"Wembanyama, Victor",(C  ),1,40,10,23,1,5,6,8,2,16,18,6,3,0,1,3,5,27,51,victor wembanyama
+10/30/2025,MIA,SA,"Adebayo, Bam",(F  ),1,37,12,27,4,13,3,4,1,9,10,3,2,0,1,2,1,31,44,bam adebayo
+10/30/2025,MIL,GS,"Rollins, Ryan",(G  ),1,36,13,21,5,7,1,3,1,2,3,8,5,0,0,1,0,32,43,ryan rollins
+10/30/2025,OKC,WAS,"Gilgeous-Alexander, Shai",(G  ),1,29,11,20,3,6,6,6,0,3,3,7,1,0,0,0,1,31,41,shai gilgeous-alexander
+10/30/2025,ORL,CHA,"Banchero, Paolo",(F  ),1,33,8,12,2,4,2,6,1,8,9,9,2,0,2,1,0,20,38,paolo banchero
+10/30/2025,GS,MIL,"Curry, Stephen",(G  ),1,35,8,19,4,10,7,8,0,6,6,4,2,0,1,5,0,27,37,stephen curry
+10/30/2025,GS,MIL,"Butler, Jimmy",(G  ),1,37,7,18,1,2,8,8,6,4,10,3,2,0,1,2,1,23,36,jimmy butler
+10/30/2025,WAS,OKC,"Coulibaly, Bilal",(G  ),1,24,6,12,2,7,2,2,1,7,8,4,0,0,1,4,3,16,28,bilal coulibaly
+10/30/2025,WAS,OKC,"Sarr, Alexandre",(C  ),1,26,5,11,2,3,2,2,3,5,8,2,2,0,1,3,2,14,24,alexandre sarr
+10/30/2025,SA,MIA,"Harper, Dylan",(SUB),1,25,5,10,2,5,1,2,0,2,2,4,1,0,0,2,0,13,19,dylan harper
+10/30/2025,CHA,ORL,"Diabate, Moussa",(SUB),1,20,4,8,0,0,2,2,4,2,6,1,2,0,0,0,2,10,17,moussa diabate
+10/30/2025,CHA,ORL,"Knueppel, Kon",(F  ),1,27,2,6,1,4,0,0,1,2,3,1,2,0,0,4,0,5,9,kon knueppel
+10/30/2025,ORL,CHA,"Penda, Noah",(SUB),1,17,1,2,0,0,1,2,0,2,2,1,2,0,0,0,0,3,6,noah penda
+10/30/2025,CHA,ORL,"Salaun, Tidjane",(SUB),1,7,0,1,0,0,0,0,1,1,2,0,0,0,0,1,0,0,2,tidjane salaun
+10/30/2025,OKC,WAS,"Dieng, Ousmane",(SUB),1,5,1,2,0,1,0,0,0,0,0,0,1,0,0,0,2,2,2,ousmane dieng
